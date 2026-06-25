@@ -1,0 +1,12 @@
+node_modules
+dist
+.vite
+pdf-pages
+.codex-pdf-tools
+pdf-preview.png
+.chrome-shot*
+.edge-shot*
+homepage-*.png
+vite.log
+vite.err.log
+temp
