@@ -5,8 +5,26 @@ const navLinks = [
   { label: "Contact us", to: "/contact" },
 ];
 
+const basePath = import.meta.env.BASE_URL;
+const normalizedBasePath = basePath.endsWith("/") ? basePath.slice(0, -1) : basePath;
+const appBasePath = normalizedBasePath === "" ? "/" : normalizedBasePath;
+
+function appHref(to) {
+  if (/^(https?:|mailto:|tel:|#)/.test(to)) return to;
+  if (appBasePath === "/") return to;
+  return `${appBasePath}${to.startsWith("/") ? to : `/${to}`}`;
+}
+
+function assetUrl(path) {
+  return `${basePath}${path.replace(/^\/+/, "")}`;
+}
+
 function currentPath() {
-  return window.location.pathname === "/" ? "/" : window.location.pathname.replace(/\/$/, "");
+  let path = window.location.pathname;
+  if (appBasePath !== "/" && path.startsWith(appBasePath)) {
+    path = path.slice(appBasePath.length) || "/";
+  }
+  return path === "/" ? "/" : path.replace(/\/$/, "");
 }
 
 function useRoute() {
@@ -31,7 +49,7 @@ function useRoute() {
   const navigate = (event, to) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    window.history.pushState({}, "", to);
+    window.history.pushState({}, "", appHref(to));
     setPath(currentPath());
   };
 
@@ -41,7 +59,7 @@ function useRoute() {
 function Link({ to, children, className, ariaCurrent, onNavigate }) {
   return (
     <a
-      href={to}
+      href={appHref(to)}
       className={className}
       aria-current={ariaCurrent}
       onClick={(event) => onNavigate(event, to)}
@@ -67,7 +85,7 @@ const hubSpotConfig = {
 function Brand({ onNavigate }) {
   return (
     <Link to="/" className="brand" ariaCurrent={undefined} onNavigate={onNavigate}>
-      <img className="brand-logo" src="/nucla-logo.png" alt="Nucla" />
+      <img className="brand-logo" src={assetUrl("nucla-logo.png")} alt="Nucla" />
     </Link>
   );
 }
@@ -168,7 +186,7 @@ function ProductVisual() {
         <span className="dot g" />
         <span className="tablabel">Nucla - Discovery &amp; Scoring</span>
       </div>
-      <img src="/nucla-product-shot.jpg" alt="Nucla product interface: AI discovery and scoring, with companies ranked against weighted criteria and scored out of 10." />
+      <img src={assetUrl("nucla-product-shot.jpg")} alt="Nucla product interface: AI discovery and scoring, with companies ranked against weighted criteria and scored out of 10." />
     </figure>
   );
 }
@@ -176,7 +194,7 @@ function ProductVisual() {
 function IntegrationVisual() {
   return (
     <div className="img-ph">
-      <img src="/nucla-integrations V2.svg" alt="Nucla integrations connected to CRM, HubSpot, Google Drive, Slack, and Microsoft Teams" />
+      <img src={assetUrl("nucla-integrations V2.svg")} alt="Nucla integrations connected to CRM, HubSpot, Google Drive, Slack, and Microsoft Teams" />
     </div>
   );
 }

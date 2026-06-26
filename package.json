@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build --base=/Nucla-Landing-Page/",
+    "preview": "vite preview --base=/Nucla-Landing-Page/",
+    "prod": "npm run build && npm run preview"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.0.0",
