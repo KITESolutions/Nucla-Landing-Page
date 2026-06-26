@@ -79,7 +79,7 @@ const hubSpotConfig = {
   region: "na3",
   embedScriptSrc: "https://js-na3.hsforms.net/forms/embed/343383413.js",
   meetingsUrl: "",
-  fallbackEmail: "info@nucla.com",
+  fallbackEmail: "sales@nucla.com",
 };
 
 function Brand({ onNavigate }) {
@@ -216,7 +216,7 @@ function Home({ onNavigate, onDemo }) {
         title="Fast-track"
         accent="discovery, scoring, and assessment"
         afterAccent="of new companies"
-        sub="Nucla automates the workflow for CVC, Transformation, Innovation, and R&D teams, reducing risks, accelerating new value and better business outcomes."
+        sub="Nucla automates the workflow for CVC, Transformation, Innovation, and R&D teams — reducing the risks, accelerating new value and better business outcomes."
         actions={
           <>
             <DemoLink className="btn btn-primary" onDemo={onDemo}>Book a demo <Arrow /></DemoLink>
@@ -229,8 +229,11 @@ function Home({ onNavigate, onDemo }) {
       <section className="trusted">
         <div className="wrap">
           <p>Trusted by growth teams at leading global enterprises</p>
-          <div className="logo-row" aria-hidden="true">
-            <span>LOGO</span><span>LOGO</span><span>LOGO</span><span>LOGO</span>
+          <div className="logo-row">
+            <img className="trusted-logo" src={assetUrl("trusted-vsp.png")} alt="VSP Vision Care" />
+            <img className="trusted-logo" src={assetUrl("trusted-mars.png")} alt="Mars" />
+            <img className="trusted-logo" src={assetUrl("trusted-pmi.png")} alt="Philip Morris International" />
+            <img className="trusted-logo" src={assetUrl("trusted-wesco.png")} alt="WESCO International" />
           </div>
         </div>
       </section>
@@ -259,7 +262,7 @@ function Home({ onNavigate, onDemo }) {
           <div className="copy">
             <p className="eyebrow">The platform</p>
             <h2>From scattered research to a governed intelligence layer.</h2>
-            <p className="lede">Nucla replaces fragmented spreadsheets and manual diligence with one AI layer for discovery, scoring, comparison, and reporting, all specific to your thesis and your criteria. You get strategic fit across business units, a score grounded in your real evaluation factors, and a clear recommendation on how to proceed.</p>
+            <p className="lede">Nucla replaces fragmented spreadsheets and manual diligence with one AI layer for discovery, scoring, comparison, and reporting — all specific to your thesis and your criteria. You get strategic fit across business units, a score grounded in your real evaluation factors, and a clear recommendation on how to proceed.</p>
             <div className="human-note"><strong>The AI does the work. You make the call.</strong> Nucla surfaces and ranks the options; your team reviews the results and owns every final decision.</div>
           </div>
           <IntegrationVisual />
@@ -302,7 +305,7 @@ function Home({ onNavigate, onDemo }) {
       </section>
 
       <Statement eyebrow="The difference" title="Generic AI doesn't know your data." accent="Nucla does." body="Nucla connects to your relationships, your prior diligence, and your cross-business-unit history through a governed, permission-aware layer, turning what your organization already knows into your sharpest advantage." />
-      <FinalCta onNavigate={onNavigate} onDemo={onDemo} eyebrow="Ready when you are" title="See Nucla on your own thesis." body="Book a 30-minute walkthrough and we'll run a live discovery against the kind of companies your team is looking for." secondary={{ label: "Watch the demo video", href: "#" }} />
+      <FinalCta onNavigate={onNavigate} onDemo={onDemo} eyebrow="Ready when you are" title="Explore getting started with Nucla." body="Book a 30-minute walkthrough and we'll run a live discovery against the kind of companies your team is looking for." secondary={{ label: "Watch the demo video", href: "#" }} />
     </main>
   );
 }
@@ -488,14 +491,14 @@ function Contact({ onNavigate, onDemo }) {
               <p>A 30-minute walkthrough on your own data. See how discovery, scoring, and cross-business-unit insight come together against your thesis.</p>
               <div className="actions">
                 <DemoLink className="btn btn-light" onDemo={onDemo}>Schedule a demo <Arrow /></DemoLink>
-                <a className="btn btn-ghost light-ghost" href="mailto:info@nucla.com">Email us instead</a>
+                <a className="btn btn-ghost light-ghost" href="mailto:sales@nucla.com">Email us instead</a>
               </div>
             </div>
             <div className="details">
               <h2>Reach us directly</h2>
               <p className="lede">Prefer to skip the form? Use whichever works best for you.</p>
               <div className="contact-list">
-                <ContactItem href="mailto:info@nucla.com" label="Email" value="info@nucla.com" />
+                <ContactItem href="mailto:sales@nucla.com" label="Email" value="sales@nucla.com" />
                 <ContactItem href="tel:1-800-668-5769" label="Toll-free" value="800-668-5769" />
                 <ContactItem href="tel:+16479600959" label="Phone" value="647-960-0959" />
                 <ContactItem label="Address" value={<>4845 Pearl E Cir,<br />Boulder, Colorado 80301<br />United States</>} muted />
