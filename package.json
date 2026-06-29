@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/Nucla-Landing-Page/",
-    "preview": "vite preview --base=/Nucla-Landing-Page/",
+    "build": "vite build --base=/",
+    "preview": "vite preview --base=/",
     "prod": "npm run build && npm run preview"
   },
   "dependencies": {
