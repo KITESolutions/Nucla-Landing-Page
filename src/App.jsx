@@ -410,7 +410,7 @@ function HowItWorks({ onNavigate, onDemo }) {
       </section>
 
       <Statement eyebrow="The principle" title="The AI does the work." accent="You make the call." body="Nucla is built to accelerate judgment, not replace it. The engine handles the searching, scoring, and research at a scale no team could match by hand, then hands you ranked, explained results." />
-      <FinalCta onNavigate={onNavigate} onDemo={onDemo} eyebrow="See it on your own thesis" title="Watch it run live." body="Book a 30-minute walkthrough and we'll run a real discovery against the kind of companies your team is looking for, from scattered data to a scored shortlist." secondary={{ label: "Back to home", to: "/" }} />
+      <FinalCta onNavigate={onNavigate} onDemo={onDemo} eyebrow="Ready when you are" title="Watch it run live." body="Book a 30-minute walkthrough and we'll run a real discovery against the kind of companies your team is looking for, from scattered data to a scored shortlist." secondary={{ label: "Back to home", to: "/" }} />
     </main>
   );
 }
