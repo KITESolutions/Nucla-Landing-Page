@@ -74,10 +74,10 @@ function Arrow() {
 }
 
 const hubSpotConfig = {
-  portalId: "343383413",
-  formId: "0b1994c6-3e5d-4224-ac8d-33e8e2612d62",
+  portalId: "343189980",
+  formId: "c9bdb0ca-cfd6-44a6-b517-34025a1df8ab",
   region: "na3",
-  embedScriptSrc: "https://js-na3.hsforms.net/forms/embed/343383413.js",
+  embedScriptSrc: "https://js-na3.hsforms.net/forms/embed/343189980.js",
   meetingsUrl: "",
   fallbackEmail: "sales@nucla.com",
 };
