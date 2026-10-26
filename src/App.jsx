@@ -116,6 +116,9 @@ function Header({ path, onNavigate, onDemo }) {
           ))}
         </nav>
         <div className="nav-cta">
+          <a className="btn btn-ghost" href="https://app.nucla.com">
+            Sign in
+          </a>
           <DemoLink className="btn btn-primary" onDemo={onDemo}>
             Book a demo <Arrow />
           </DemoLink>

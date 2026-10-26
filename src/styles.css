@@ -211,6 +211,17 @@ h3 {
   color: var(--ink);
 }
 
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.nav-cta .btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 .hero {
   padding: clamp(3.5rem, 8vw, 6rem) 0 clamp(2.5rem, 5vw, 4rem);
 }
@@ -1060,9 +1071,15 @@ body.hs-demo-open {
   }
 
   .nav-inner {
+    height: auto;
+    min-height: 72px;
     flex-wrap: wrap;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
+  }
+
+  .nav-cta {
+    margin-left: auto;
   }
 
   .company-row {
