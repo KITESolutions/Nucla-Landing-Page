@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import FreeSearch from "./FreeSearch.jsx";
 
 const navLinks = [
   { label: "How it works", to: "/how-it-works" },
@@ -223,6 +224,7 @@ function Home({ onNavigate, onDemo }) {
         actions={
           <>
             <DemoLink className="btn btn-primary" onDemo={onDemo}>Book a demo <Arrow /></DemoLink>
+            <Link className="btn btn-ghost" to="/try" onNavigate={onNavigate}>Try a free search</Link>
             <a className="btn btn-ghost" href="#solution">See how it works</a>
           </>
         }
@@ -475,6 +477,25 @@ function FinalCta({ onNavigate, onDemo, eyebrow, title, body, secondary }) {
   );
 }
 
+function TryPage({ onDemo }) {
+  return (
+    <main id="top">
+      <PageHero
+        compact
+        eyebrow="Free search"
+        title="Find your next"
+        accent="best-fit companies"
+        sub="Describe what you're looking for. Nucla finds matching companies and scores each one against the strategy you pick."
+      />
+      <section className="band contact-band">
+        <div className="wrap">
+          <FreeSearch bookAction={<DemoLink className="btn btn-light" onDemo={onDemo}>Book a walkthrough <Arrow /></DemoLink>} />
+        </div>
+      </section>
+    </main>
+  );
+}
+
 function Contact({ onNavigate, onDemo }) {
   return (
     <main id="main">
@@ -627,7 +648,9 @@ export default function App() {
     ? <HowItWorks onNavigate={navigate} onDemo={openDemo} />
     : path === "/contact"
       ? <Contact onNavigate={navigate} onDemo={openDemo} />
-      : <Home onNavigate={navigate} onDemo={openDemo} />;
+      : path === "/try"
+        ? <TryPage onDemo={openDemo} />
+        : <Home onNavigate={navigate} onDemo={openDemo} />;
 
   return (
     <>

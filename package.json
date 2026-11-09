@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/",
+    "build": "vite build --base=/ && node scripts/spa-routes.mjs",
     "preview": "vite preview --base=/",
     "prod": "npm run build && npm run preview"
   },

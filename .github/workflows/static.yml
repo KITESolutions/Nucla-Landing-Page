@@ -40,6 +40,10 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+        env:
+          # Repository variables (public values): the Nucla API origin and the Turnstile site key.
+          VITE_NUCLA_API_URL: ${{ vars.NUCLA_API_URL }}
+          VITE_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
