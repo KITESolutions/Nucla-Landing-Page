@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-// Free Nucla search: one search, one more after an emailed code, then the booking form.
+// Free Nucla search: confirm an email with a code, run two searches, then the booking form.
 // Every limit is enforced by the Nucla API; this component only shows the state it returns.
 // Both values are set at build time (see .github/workflows/static.yml). Without them the search stays off.
 const API = (import.meta.env.VITE_NUCLA_API_URL || "").replace(/\/$/, "");
@@ -222,7 +222,7 @@ export default function FreeSearch({ bookAction }) {
   const [lenses, setLenses] = useState([]);
   const [lens, setLens] = useState("");
   const [query, setQuery] = useState("");
-  // form | running | results | email | code | book | busy
+  // form (email first) | code | running | stalled | results | again | book | busy
   const [phase, setPhase] = useState("form");
   const [search, setSearch] = useState(null);
   const [email, setEmail] = useState("");
@@ -262,9 +262,10 @@ export default function FreeSearch({ bookAction }) {
     const tick = async () => {
       if (stop) return;
       if (Date.now() - startedAt > POLL_GIVE_UP_MS) {
-        // Submitting again returns this same search if it is still running.
-        setError("This search is taking longer than usual. Try again in a few minutes.");
-        setPhase("form");
+        // No new search is offered: it would count even if this one finishes. The stored
+        // search id is kept, so a refresh picks this search up again.
+        setError("This search is taking longer than usual. Refresh the page in a few minutes to see your results.");
+        setPhase("stalled");
         return;
       }
       try {
@@ -277,7 +278,7 @@ export default function FreeSearch({ bookAction }) {
             // Nothing found is not charged, so the visitor can describe it differently.
             store(SEARCH_KEY, null);
             setError("No strong matches for that description. This search didn't count, so try describing it differently.");
-            setPhase(body.next === "email" ? "email" : "form");
+            setPhase("again");
             return;
           }
           setError("");
@@ -287,15 +288,17 @@ export default function FreeSearch({ bookAction }) {
         if (body.status === "failed") {
           store(SEARCH_KEY, null);
           setError(body.error || "That search didn't finish. Try again.");
-          setPhase(body.next === "email" ? "email" : "form");
+          setPhase("again");
           return;
         }
       } catch (err) {
         if (stop) return;
         if (err.status === 404) {
+          // The search record has expired. The email confirmed in this browser still counts,
+          // and the API asks for it again if it doesn't.
           store(SEARCH_KEY, null);
           setSearch(null);
-          setPhase("form");
+          setPhase("again");
           return;
         }
         failures += 1;
@@ -310,7 +313,7 @@ export default function FreeSearch({ bookAction }) {
   }, [phase, search?.search_id]);
 
   const handleRefusal = (err) => {
-    if (err.code === "tripwire_email_required") setPhase("email");
+    if (err.code === "tripwire_email_required") setPhase("form");
     else if (err.code === "tripwire_limit_reached") setPhase("book");
     else if (err.code === "tripwire_busy") setPhase("busy");
     setError(err.message === "verification" ? "We couldn't verify this browser. Refresh and try again." : err.message);
@@ -374,11 +377,11 @@ export default function FreeSearch({ bookAction }) {
     } catch (err) {
       handleRefusal(err);
       // Wrong code, full day and used-up searches are answered before or without using the
-      // code. Anything else may come after the server used it, so ask for a new one.
+      // code. Anything else may come after the server confirmed the email and started the
+      // search, so try without a code first: the API returns that search, or asks for a code.
       if (!["invalid_or_expired_code", "tripwire_busy", "tripwire_limit_reached"].includes(err.code)) {
-        // The server may already have used this code, so a retry needs a new one.
-        setPhase("email");
-        setError(`${err.message} Request a new code to try again.`);
+        setPhase("again");
+        setError(`${err.message} Try again.`);
       }
     } finally {
       setBusy(false);
@@ -424,14 +427,22 @@ export default function FreeSearch({ bookAction }) {
     <div className="fs">
 
       {phase === "form" ? (
-        <form className="fs-panel" onSubmit={start}>
+        <form className="fs-panel" onSubmit={sendCode}>
           <p className="eyebrow">Strategy lens</p>
           {lensPicker}
           {queryBox("Describe the companies you want to find")}
-          <button className="btn btn-primary" type="submit" disabled={busy || !lens || query.trim().length < 3}>
-            {busy ? "Starting…" : "Run my free search"}
+          <label className="fs-field">
+            <span>Your work email (we'll send a one-time code)</span>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
+          </label>
+          <p className="fs-note">
+            Two free searches. Enter the code we email you to see your results, and Nucla may follow up about your
+            search.{" "}
+            <a href="https://app.nucla.com/legal/privacy" target="_blank" rel="noopener noreferrer">Privacy policy</a>
+          </p>
+          <button className="btn btn-primary" type="submit" disabled={busy || !lens || !email || query.trim().length < 3}>
+            {busy ? "Sending…" : "Email me a code"}
           </button>
-          <p className="fs-note">Your first search is free. No sign-up needed.</p>
         </form>
       ) : null}
 
@@ -458,30 +469,22 @@ export default function FreeSearch({ bookAction }) {
         </section>
       ) : null}
 
-      {phase === "results" && search?.next === "email" ? (
+      {phase === "results" && search?.next === "search" ? (
         <div className="fs-panel fs-next">
           <b>Want one more free search?</b>
-          <button className="btn btn-ghost" type="button" onClick={() => { setQuery(""); setError(""); setPhase("email"); }}>
+          <button className="btn btn-ghost" type="button" onClick={() => { setQuery(""); setError(""); setPhase("again"); }}>
             Run one more search
           </button>
         </div>
       ) : null}
 
-      {phase === "email" ? (
-        <form className="fs-panel" onSubmit={sendCode}>
-          <p className="eyebrow">One more free search</p>
+      {phase === "again" ? (
+        <form className="fs-panel" onSubmit={start}>
+          <p className="eyebrow">{search?.results?.length ? "One more free search" : "Try a different description"}</p>
           {lensPicker}
           {queryBox("What should the next search find?")}
-          <label className="fs-field">
-            <span>Your work email (we'll send a one-time code)</span>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
-          </label>
-          <p className="fs-note">
-            We'll email you this code, and Nucla may follow up about your search.{" "}
-            <a href="https://app.nucla.com/legal/privacy" target="_blank" rel="noopener noreferrer">Privacy policy</a>
-          </p>
-          <button className="btn btn-primary" type="submit" disabled={busy || !lens || !email || query.trim().length < 3}>
-            {busy ? "Sending…" : "Email me a code"}
+          <button className="btn btn-primary" type="submit" disabled={busy || !lens || query.trim().length < 3}>
+            {busy ? "Starting…" : "Run my search"}
           </button>
         </form>
       ) : null}
@@ -504,7 +507,7 @@ export default function FreeSearch({ bookAction }) {
             <button className="btn btn-primary" type="submit" disabled={busy || code.length !== 6}>
               {busy ? "Checking…" : "Run my search"}
             </button>
-            <button className="btn btn-ghost" type="button" disabled={busy} onClick={() => { setError(""); setPhase("email"); }}>
+            <button className="btn btn-ghost" type="button" disabled={busy} onClick={() => { setError(""); setPhase("form"); }}>
               Change email or resend
             </button>
           </div>
