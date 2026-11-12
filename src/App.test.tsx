@@ -1,7 +1,10 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 import { App } from "./App";
+
+// Built without the free discovery settings, as the site deploys before the API is live.
+vi.mock("@/lib/config", () => ({ config: { apiUrl: "", turnstileSiteKey: "" }, freeDiscoveryEnabled: false }));
 
 function renderAt(path: string) {
   render(
@@ -29,7 +32,7 @@ describe("the site", () => {
     ["/contact.html", "Let's talk about your deal flow."],
     ["/how-it-works.html", "Other AI tools know the market. Nucla knows your relationship context."],
     ["/index.html", "Find your next best investment. Assess every opportunity faster."],
-  ])("answers the .html address %s", (path, title) => {
+  ])("answers the old site's and the redesign's link %s", (path, title) => {
     renderAt(path);
     expect(heading()).toBe(title);
   });
@@ -49,6 +52,20 @@ describe("the site", () => {
     for (const link of screen.getAllByRole("link", { name: /book a demo/i })) {
       expect(link.getAttribute("href")).toBe("/contact#contact-form");
     }
+  });
+});
+
+describe("without the free discovery settings", () => {
+  it("leaves free discovery out of the home page and the footer", () => {
+    renderAt("/");
+    expect(screen.queryByRole("link", { name: "Try a free discovery →" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: /try a discovery now/i })).toBeNull();
+    expect(within(screen.getByRole("navigation", { name: "Footer" })).queryByText("Free discovery")).toBeNull();
+  });
+
+  it.each(["/free-discovery", "/free-discovery.html"])("sends %s to the home page", (path) => {
+    renderAt(path);
+    expect(heading()).toBe("Find your next best investment. Assess every opportunity faster.");
   });
 });
 

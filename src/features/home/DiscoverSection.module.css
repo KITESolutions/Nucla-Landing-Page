@@ -1,0 +1,21 @@
+.section {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(56px, 8vw, 110px) clamp(16px, 4vw, 40px) clamp(56px, 7vw, 96px);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 24px 48px;
+  align-items: end;
+  margin-bottom: 28px;
+}
+
+.note {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

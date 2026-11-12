@@ -62,6 +62,15 @@ textarea::placeholder {
   }
 }
 
+/* Cloudflare's check, shown only when it needs the visitor (see useTurnstile). */
+.turnstile-holder {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  z-index: 60;
+  transform: translateX(-50%);
+}
+
 /* In-page links land below the floating header. */
 [id] {
   scroll-margin-top: 90px;

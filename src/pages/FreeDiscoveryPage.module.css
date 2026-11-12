@@ -1,0 +1,94 @@
+.promises {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 24px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--on-dark);
+  font-size: 15px;
+}
+
+.promises li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tick {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.steps {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(72px, 9vw, 120px) clamp(16px, 4vw, 40px);
+}
+
+.stepGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(24px, 3vw, 40px);
+  margin: clamp(32px, 4vw, 48px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stepCard {
+  padding: 22px 24px 26px;
+  border-radius: 22px;
+  background: var(--surface);
+}
+
+.stepNumber {
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.stepTitle {
+  margin-top: 18px;
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.stepText {
+  margin: 8px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.repeat {
+  margin-top: 44px;
+}
+
+.startButton {
+  display: inline-flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 30px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.startButton:hover {
+  background: var(--primary-soft);
+  color: var(--ink);
+}
+
+.note {
+  margin-top: 18px;
+  color: var(--on-dark-5);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}

@@ -1,6 +1,7 @@
 import { ClosingCta } from "@/components/sections/ClosingCta";
 import { CustomerProof } from "@/components/sections/CustomerProof";
 import { Clients } from "@/features/home/Clients";
+import { DiscoverSection } from "@/features/home/DiscoverSection";
 import { FourOutputs } from "@/features/home/FourOutputs";
 import { HomeHero } from "@/features/home/HomeHero";
 import { MachineFirst } from "@/features/home/MachineFirst";
@@ -9,6 +10,7 @@ import { Partnership } from "@/features/home/Partnership";
 import { RoiTeaser } from "@/features/home/RoiTeaser";
 import { Security } from "@/features/home/Security";
 import { SignalMarquee } from "@/features/home/SignalMarquee";
+import { freeDiscoveryEnabled } from "@/lib/config";
 import { usePageTitle } from "@/lib/usePageTitle";
 
 export function HomePage() {
@@ -16,6 +18,7 @@ export function HomePage() {
   return (
     <>
       <HomeHero />
+      {freeDiscoveryEnabled && <DiscoverSection />}
       <SignalMarquee />
       <Clients />
       <Manifesto />

@@ -3,6 +3,7 @@ export const routes = {
   home: "/",
   howItWorks: "/how-it-works",
   roiCalculator: "/roi-calculator",
+  freeDiscovery: "/free-discovery",
   contact: "/contact",
 } as const;
 

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { freeDiscoveryEnabled } from "@/lib/config";
 import { linkedIn, routes, salesEmail } from "@/lib/routes";
 
 import styles from "./Footer.module.css";
@@ -8,6 +9,7 @@ const LINKS = [
   { to: `${routes.home}#platform`, label: "Platform" },
   { to: routes.howItWorks, label: "How it works" },
   { to: routes.roiCalculator, label: "ROI calculator" },
+  ...(freeDiscoveryEnabled ? [{ to: routes.freeDiscovery, label: "Free discovery" }] : []),
   { to: routes.contact, label: "Contact us" },
 ];
 

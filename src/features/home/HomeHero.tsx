@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { freeDiscoveryEnabled } from "@/lib/config";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 import { Globe } from "./Globe";
@@ -37,6 +38,11 @@ export function HomeHero() {
           <Typer />
         </p>
         <div className={styles.actions}>
+          {freeDiscoveryEnabled && (
+            <a href="#discover" className={styles.tryButton}>
+              Try a free discovery →
+            </a>
+          )}
           <a href="#demo" className={styles.demoButton}>
             Book a demo <span aria-hidden="true">↗</span>
           </a>
