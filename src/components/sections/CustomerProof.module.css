@@ -1,0 +1,147 @@
+.section_card,
+.section_feature {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.section_card {
+  padding: 0 clamp(16px, 4vw, 40px) clamp(80px, 10vw, 130px);
+}
+
+.section_feature {
+  padding: 0 clamp(16px, 4vw, 40px) clamp(88px, 11vw, 150px);
+}
+
+.card {
+  padding: clamp(22px, 4vw, 56px);
+  border-radius: var(--radius-band);
+  background: var(--surface);
+}
+
+.grid_card,
+.grid_feature {
+  display: grid;
+  gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+
+.grid_card {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+}
+
+.grid_feature {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+}
+
+.photoFrame_card,
+.photoFrame_feature {
+  position: relative;
+  width: 100%;
+}
+
+.photoFrame_card {
+  aspect-ratio: 4 / 3;
+}
+
+.photoFrame_feature {
+  aspect-ratio: 5 / 4;
+}
+
+.photo_card,
+.photo_feature {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 58% center;
+}
+
+.photo_card {
+  border-radius: 28px;
+}
+
+.photo_feature {
+  border-radius: 32px;
+}
+
+.question {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max-content;
+  max-width: 86%;
+  padding: 14px 24px;
+  border-radius: var(--radius-pill);
+  background: var(--glass-strong);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-pill);
+  color: var(--ink);
+  font-size: clamp(15px, 1.6vw, 20px);
+  letter-spacing: -0.02em;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.figure_card,
+.figure_feature {
+  margin: 0;
+}
+
+.figure_feature {
+  max-width: 540px;
+}
+
+.eyebrow {
+  margin-bottom: 24px;
+}
+
+.quote_card,
+.quote_feature {
+  margin: 0;
+  font-weight: 500;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.quote_card {
+  font-size: clamp(24px, 2.6vw, 34px);
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+}
+
+.quote_feature {
+  font-size: clamp(26px, 2.8vw, 38px);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+.caption_card,
+.caption_feature {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.caption_card {
+  margin-top: 28px;
+}
+
+.caption_feature {
+  margin-top: 32px;
+}
+
+.logo {
+  display: block;
+  height: 40px;
+  width: auto;
+}
+
+.role {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}

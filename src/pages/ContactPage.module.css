@@ -1,0 +1,117 @@
+.section {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(56px, 7vw, 96px) clamp(16px, 4vw, 40px) clamp(80px, 10vw, 140px);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+.formCard,
+.infoCard {
+  min-width: 0;
+  padding: clamp(22px, 3.4vw, 44px);
+  border-radius: clamp(20px, 2.4vw, 32px);
+}
+
+.formCard {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: var(--surface);
+}
+
+.alt {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+.infoCard {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background: var(--ink);
+  color: var(--on-dark-2);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hairline-on-dark);
+}
+
+.stepNumber {
+  padding-top: 3px;
+  color: var(--lilac);
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.stepTitle {
+  color: var(--on-dark);
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.stepText {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: auto;
+}
+
+.detail {
+  padding: 18px;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--hairline-on-dark);
+  background: var(--panel-on-dark);
+}
+
+.detailLabel {
+  color: var(--lilac-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.detailLink {
+  display: block;
+  margin-top: 8px;
+  color: var(--on-dark);
+  font-size: 17px;
+}
+
+.detailLink:hover {
+  color: var(--lilac);
+}
+
+.address {
+  margin-top: 8px;
+  color: var(--on-dark);
+  font-size: 15px;
+  font-style: normal;
+  line-height: 1.45;
+}

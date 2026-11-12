@@ -1,0 +1,41 @@
+.strip {
+  overflow: hidden;
+  padding: 20px 0;
+  border-top: 1px solid var(--line-3);
+  border-bottom: 1px solid var(--line-3);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: marquee 60s linear infinite;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  gap: 26px;
+  padding-right: 26px;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dot {
+  color: var(--success);
+  font-size: 10px;
+}
+
+/* Two copies of the list scroll by half their width, so the loop has no seam. */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}

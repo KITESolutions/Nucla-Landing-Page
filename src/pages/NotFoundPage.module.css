@@ -1,0 +1,13 @@
+.home {
+  display: inline-flex;
+  margin-top: 36px;
+  color: var(--lilac);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.home:hover {
+  color: var(--on-dark);
+}

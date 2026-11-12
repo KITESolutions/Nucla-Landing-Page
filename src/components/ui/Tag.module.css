@@ -1,0 +1,33 @@
+.tag {
+  border-radius: var(--radius-pill);
+}
+
+.plain {
+  padding: 7px 13px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.mono {
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.success {
+  flex: none;
+  padding: 3px 8px;
+  background: var(--success-soft);
+  color: var(--success-ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

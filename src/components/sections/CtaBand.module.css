@@ -1,0 +1,26 @@
+.band {
+  margin: 0 var(--band-inset);
+  border-radius: var(--radius-band);
+  background: var(--ink);
+}
+
+.inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(88px, 12vw, 170px) var(--gutter);
+  text-align: center;
+}
+
+.title {
+  margin: 0 auto;
+  font-weight: 500;
+  font-size: clamp(40px, 6.4vw, 92px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  color: var(--on-dark);
+}
+
+.accent {
+  color: var(--lilac);
+  white-space: nowrap;
+}

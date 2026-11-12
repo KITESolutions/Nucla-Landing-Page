@@ -1,0 +1,68 @@
+@import "./tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--page);
+  -webkit-font-smoothing: antialiased;
+  /* clip, not hidden: hidden makes body a scroll container and unpins the sticky header. */
+  overflow-x: clip;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--ink-2);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+img {
+  max-width: 100%;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink-4);
+}
+
+/* Visible only to screen readers. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Keyframes live in the CSS module that animates them: CSS Modules rename them per file. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* In-page links land below the floating header. */
+[id] {
+  scroll-margin-top: 90px;
+}
