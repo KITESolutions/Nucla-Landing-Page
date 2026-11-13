@@ -1,0 +1,186 @@
+/* The contact form from the redesign. */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.topics {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.question,
+.label {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.question {
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--line-2);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--ink-4);
+}
+
+.chip:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.chipOn,
+.chipOn:hover {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--on-dark);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.optional {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border: 1.5px solid var(--line-2);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.input {
+  height: 50px;
+  padding: 0 16px;
+  text-overflow: ellipsis;
+}
+
+.textarea {
+  min-height: 120px;
+  padding: 12px 16px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--ink-4);
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.error,
+.failure {
+  margin: 0;
+  color: var(--danger);
+  font-size: 14px;
+}
+
+.failure a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 16px;
+}
+
+.send {
+  height: 52px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-dark);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.send:hover {
+  background: var(--primary-hover);
+}
+
+.send:disabled {
+  cursor: progress;
+  opacity: 0.8;
+}
+
+.note {
+  color: var(--ink-3);
+  font-size: 14px;
+}
+
+.thanks {
+  padding: 8px 0;
+  outline: none;
+}
+
+.thanksTitle {
+  color: var(--ink);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.thanksText {
+  margin: 8px 0 0;
+  color: var(--ink-2);
+  font-size: 16px;
+  line-height: 1.5;
+}

@@ -1,7 +1,7 @@
 import { ClosingCta } from "@/components/sections/ClosingCta";
 import { PageHero } from "@/components/sections/PageHero";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { HubSpotForm } from "@/features/contact/HubSpotForm";
+import { ContactForm } from "@/features/contact/ContactForm";
 import { linkedIn, salesEmail } from "@/lib/routes";
 import { usePageTitle } from "@/lib/usePageTitle";
 
@@ -33,7 +33,7 @@ export function ContactPage() {
         <div className={styles.grid}>
           <div className={styles.formCard}>
             <Eyebrow>Send us a message</Eyebrow>
-            <HubSpotForm />
+            <ContactForm />
             <p className={styles.alt}>
               Prefer email? Write to <a href={`mailto:${salesEmail}`}>{salesEmail}</a>.
             </p>
