@@ -8,18 +8,19 @@ const PROBLEMS = [
 
 export function Manifesto() {
   return (
-    <section className={styles.section}>
-      <h2 className={styles.title}>
-        Ventures still run on <del className={styles.struck}>inboxes</del>. They should run on{" "}
-        <span className={styles.accent}>intelligence</span>.
-      </h2>
-      <div className={styles.grid}>
-        {PROBLEMS.map((problem, index) => (
-          <div key={problem}>
-            <div className={styles.label}>Problem {String(index + 1).padStart(2, "0")}</div>
-            <p className={styles.problem}>{problem}</p>
-          </div>
-        ))}
+    <section className={styles.band}>
+      <div className={styles.inner}>
+        <h2 className={styles.title}>
+          Ventures still run on <del className={styles.struck}>inboxes</del>. They should run on{" "}
+          <span className={styles.accent}>intelligence</span>.
+        </h2>
+        <div className={styles.grid}>
+          {PROBLEMS.map((problem) => (
+            <p key={problem} className={styles.problem}>
+              {problem}
+            </p>
+          ))}
+        </div>
       </div>
     </section>
   );

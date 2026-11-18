@@ -26,7 +26,6 @@ export function HomeHero() {
   return (
     <section className={styles.band}>
       <div className={styles.inner}>
-        <div className={styles.eyebrow}>Nucla AI · for corporate venture &amp; innovation teams</div>
         <h1 className={styles.title}>
           <span className={styles.line}>
             Find your next <span className={styles.accent}>best investment.</span>
@@ -56,7 +55,6 @@ export function HomeHero() {
           {PILLARS.map((title, index) => (
             <li key={title} className={styles.pillar} data-active={index === active || undefined}>
               <span className={styles.pillarBar} aria-hidden="true" />
-              <span className={styles.pillarNumber}>{String(index + 1).padStart(2, "0")}</span>
               <div className={styles.pillarTitle}>{title}</div>
             </li>
           ))}

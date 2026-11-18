@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { formatCount, hoursBack } from "@/lib/roi";
 import { routes } from "@/lib/routes";
 
@@ -22,7 +21,6 @@ export function RoiTeaser() {
   return (
     <section className={styles.section}>
       <div className={styles.card}>
-        <Eyebrow className={styles.eyebrow}>ROI</Eyebrow>
         <p className={styles.sentence}>
           If your team reviews{" "}
           <input
@@ -50,7 +48,6 @@ export function RoiTeaser() {
           <Link to={routes.roiCalculator} className={styles.link}>
             Open the full ROI calculator →
           </Link>
-          <span className={styles.assumption}>Assumes a 68% cut in first-pass time, from our modeled 20/60/20 split.</span>
         </div>
       </div>
     </section>

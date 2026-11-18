@@ -10,15 +10,11 @@
   background: var(--surface);
 }
 
-.eyebrow {
-  margin-bottom: 24px;
-}
-
 .sentence {
   max-width: 1080px;
   margin: 0;
   font-weight: 500;
-  font-size: clamp(26px, 3.4vw, 48px);
+  font-size: clamp(24px, 2.8vw, 40px);
   line-height: 1.3;
   letter-spacing: -0.04em;
   color: var(--ink);
@@ -58,11 +54,7 @@
 }
 
 .footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px 32px;
-  margin-top: 36px;
+  margin-top: 28px;
 }
 
 .link {
@@ -82,10 +74,4 @@
 .link:hover {
   background: var(--night-2);
   color: var(--on-dark);
-}
-
-.assumption {
-  color: var(--ink-3);
-  font-family: var(--font-mono);
-  font-size: 12px;
 }

@@ -3,6 +3,7 @@ import { PageHero } from "@/components/sections/PageHero";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 import { Tag } from "@/components/ui/Tag";
+import { FourSteps } from "@/features/how-it-works/FourSteps";
 import { usePageTitle } from "@/lib/usePageTitle";
 
 import styles from "./HowItWorksPage.module.css";
@@ -15,23 +16,11 @@ const SOURCES = [
 const ENGINE = ["Entity resolution", "Relationship graph", "Consistent scoring"];
 
 const OUTPUTS = [
-  { n: "01", title: "Discover", text: "Companies that fit, beyond the ones you track", tone: "lilac" },
-  { n: "02", title: "Assess", text: "A proper first pass on every inbound", tone: "mint" },
-  { n: "03", title: "Rank", text: "On your team's own weighted criteria", tone: "lilac" },
-  { n: "04", title: "Report", text: "IC-ready memos, every claim cited", tone: "mint" },
+  { title: "Discover", text: "Companies that fit, beyond the ones you track", tone: "lilac" },
+  { title: "Assess", text: "A proper first pass on every inbound", tone: "mint" },
+  { title: "Rank", text: "On your team's own weighted criteria", tone: "lilac" },
+  { title: "Report", text: "IC-ready memos, every claim cited", tone: "mint" },
 ] as const;
-
-const STEPS = [
-  { n: "01", tag: "About 10 minutes", title: "Set your thesis", text: "Describe what you look for and how you weigh it. Plain English works." },
-  {
-    n: "02",
-    tag: "Optional · read-only",
-    title: "Connect your systems",
-    text: "Optional, whenever you are ready. Link your CRM, email and procurement tools. Nucla reads. It never writes.",
-  },
-  { n: "03", tag: "", title: "Discover and assess", text: "Search the market and clear your inbound in one ranked queue." },
-  { n: "04", tag: "", title: "Decide and share", text: "Send IC-ready reports with every source attached." },
-];
 
 const QUESTIONS = [
   { q: "Has anyone spoken to this company?", a: "Yes. R. Okafor in Supply Chain met their CEO in March." },
@@ -39,29 +28,27 @@ const QUESTIONS = [
   { q: "Do we already work with them?", a: "Active vendor in SAP Ariba since 2025." },
 ];
 
+/** Each logo's height, matched by eye in the redesign so the marks look the same size. */
 const YOUR_SYSTEMS = [
-  "Salesforce",
-  "HubSpot",
-  "Affinity",
-  "Attio",
-  "Microsoft Teams & email",
-  "Google Workspace",
-  "Slack",
-  "SAP",
-  "SAP Ariba",
-  "Coupa",
-  "Typeform",
-  "Airtable",
-  "Excel & CSV",
+  { src: "/images/salesforce-logo.png", alt: "Salesforce", height: 22 },
+  { src: "/images/hubspot-logo.png", alt: "HubSpot", height: 24 },
+  { src: "/images/affinity-logo.png", alt: "Affinity", height: 24 },
+  { src: "/images/gmail-logo.png", alt: "Gmail", height: 24 },
 ];
 
-const MARKET_DATA = ["PitchBook", "Crunchbase", "Crustdata", "Owler", "LinkedIn", "Meltwater"];
+const MARKET_DATA = [
+  { src: "/images/linkedin-logo.png", alt: "LinkedIn", height: 17 },
+  { src: "/images/crustdata-logo.png", alt: "Crustdata", height: 17 },
+  { src: "/images/crunchbase-logo.png", alt: "Crunchbase", height: 14 },
+  { src: "/images/carbonarc-logo.png", alt: "Carbon Arc", height: 17 },
+];
 
-const TRUST = [
-  { title: "One resolved record", text: "Market data and your internal history merge into a single profile per company." },
-  { title: "Traceable answers", text: "Every claim links to its source and is marked verified or inferred." },
-  { title: "Auditable access", text: "Read-only and permission-aware. Every query is logged." },
-  { title: "Built for IT review", text: "SOC 2 Type II, SSO and no cross-client training." },
+const CLIENTS = ["Mars", "Wesco", "PMI"];
+const CONTROLS = ["SOC 2 Type II", "Single sign-on", "No cross-client training"];
+const ACTIVITY = [
+  { time: "09:12", text: "searched “grid storage”" },
+  { time: "09:14", text: "opened Hallex Energy" },
+  { time: "09:20", text: "memo shared with IC" },
 ];
 
 export function HowItWorksPage() {
@@ -69,7 +56,6 @@ export function HowItWorksPage() {
   return (
     <>
       <PageHero
-        eyebrow="How it works"
         title="Other AI tools know the market."
         accent="Nucla knows your relationship context."
         layout="stacked"
@@ -80,10 +66,7 @@ export function HowItWorksPage() {
 
       <section className={styles.what}>
         <div className={styles.whiteCard}>
-          <Eyebrow>What is Nucla</Eyebrow>
-          <SectionTitle accent="One place." className={styles.whatTitle}>
-            Market data and internal knowledge.
-          </SectionTitle>
+          <SectionTitle accent="One place.">Market data and internal knowledge.</SectionTitle>
           <p className={styles.lede}>
             Nucla brings public signals and what your organization already knows into one record per company, so every
             discovery and every inbound is judged with the full picture.
@@ -111,8 +94,7 @@ export function HowItWorksPage() {
             <div className={styles.arrow} aria-hidden="true" />
             <div className={styles.outputs}>
               {OUTPUTS.map((output) => (
-                <div key={output.n} className={`${styles.output} ${styles[output.tone]}`}>
-                  <div className={styles.outputNumber}>{output.n}</div>
+                <div key={output.title} className={`${styles.output} ${styles[output.tone]}`}>
                   <div className={styles.outputTitle}>{output.title}</div>
                   <div className={styles.sourceText}>{output.text}</div>
                 </div>
@@ -122,21 +104,7 @@ export function HowItWorksPage() {
         </div>
       </section>
 
-      <section className={styles.fourSteps}>
-        <SectionTitle accent="Live the same day.">Four steps.</SectionTitle>
-        <ol className={styles.stepGrid}>
-          {STEPS.map((step) => (
-            <li key={step.n} className={styles.stepCard}>
-              <div className={styles.stepMeta}>
-                <span>{step.n}</span>
-                <span className={styles.stepTag}>{step.tag}</span>
-              </div>
-              <div className={styles.stepTitle}>{step.title}</div>
-              <p className={styles.stepText}>{step.text}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <FourSteps />
 
       <section className={styles.integrations}>
         <div className={styles.integrationsInner}>
@@ -146,9 +114,9 @@ export function HowItWorksPage() {
                 Works with what you
               </SectionTitle>
               <p className={styles.integrationsText}>
-                Nucla connects read-only to your CRM, email and collaboration tools and pulls in the relationship context
-                behind every company. Before anyone takes a meeting, you can see whether someone has already spoken to
-                them, who owns the relationship, and whether you passed on them 12 months ago.
+                Nucla connects to your CRM, email and collaboration tools and pulls in the relationship context behind
+                every company. Before anyone takes a meeting, you can see whether someone has already spoken to them, who
+                owns the relationship, and whether you passed on them 12 months ago.
               </p>
             </div>
             <div className={styles.example}>
@@ -157,13 +125,12 @@ export function HowItWorksPage() {
                   <div className={styles.exampleCompany}>Hallex Energy</div>
                   <div className={styles.exampleMeta}>Copenhagen · Series A · Grid storage</div>
                 </div>
-                <Tag tone="mono">Illustrative</Tag>
               </div>
               {QUESTIONS.map((item) => (
                 <div key={item.q} className={styles.qa}>
                   <div className={styles.question}>“{item.q}”</div>
                   <div className={styles.answer}>
-                    <Tag tone="success">Nucla</Tag>
+                    <Tag>Nucla</Tag>
                     <span>{item.a}</span>
                   </div>
                 </div>
@@ -173,48 +140,112 @@ export function HowItWorksPage() {
 
           <div className={styles.sourceLists}>
             <div className={styles.sourceList}>
-              <Eyebrow tone="success" className={styles.listLabel}>
-                Your systems · read-only
-              </Eyebrow>
-              <div className={styles.tags}>
-                {YOUR_SYSTEMS.map((name) => (
-                  <Tag key={name}>{name}</Tag>
+              <h3 className={styles.listTitle}>Your systems</h3>
+              <div className={styles.logos}>
+                {YOUR_SYSTEMS.map((logo) => (
+                  <span key={logo.alt} className={styles.logoTile}>
+                    <img src={logo.src} alt={logo.alt} height={logo.height} className={styles.logo} />
+                  </span>
                 ))}
+                <span className={styles.more}>+ more</span>
               </div>
             </div>
             <div className={styles.sourceList}>
-              <Eyebrow className={styles.listLabel}>Market data</Eyebrow>
-              <div className={styles.tags}>
-                {MARKET_DATA.map((name) => (
-                  <Tag key={name}>{name}</Tag>
+              <h3 className={styles.listTitle}>Market data</h3>
+              <div className={`${styles.logos} ${styles.tight}`}>
+                {MARKET_DATA.map((logo) => (
+                  <span key={logo.alt} className={`${styles.logoTile} ${styles.narrowTile}`}>
+                    <img src={logo.src} alt={logo.alt} height={logo.height} className={styles.logo} />
+                  </span>
                 ))}
               </div>
             </div>
           </div>
           <div className={styles.mcp}>
-            <Eyebrow tone="mint" className={styles.mcpLabel}>
-              Plus MCP access
-            </Eyebrow>
-            <span className={styles.mcpText}>Query Nucla from Claude, ChatGPT and Copilot.</span>
+            <span className={styles.mcpText}>
+              <span className={styles.mcpLead}>Plus MCP access.</span> Query Nucla from Claude, ChatGPT and Copilot.
+            </span>
           </div>
         </div>
       </section>
 
       <section className={styles.trust}>
-        <SectionTitle accent="for enterprise AI." stacked balance className={styles.trustTitle}>
-          A security partner
-        </SectionTitle>
-        <p className={styles.trustText}>
-          Nucla already runs inside global enterprises like Mars, Wesco and PMI. We work alongside your IT and AI teams
-          through security and architecture review, and stay with you after go-live.
-        </p>
-        <div className={styles.trustGrid}>
-          {TRUST.map((item) => (
-            <div key={item.title} className={styles.trustCard}>
-              <div className={styles.trustCardTitle}>{item.title}</div>
-              <p className={styles.trustCardText}>{item.text}</p>
+        <div className={styles.trustHead}>
+          <SectionTitle accent="for enterprise AI." stacked className={styles.trustTitle}>
+            A security partner
+          </SectionTitle>
+          <div className={styles.trustAside}>
+            <p className={styles.trustText}>From security review to go-live and beyond, we work alongside your IT team.</p>
+            <div className={styles.running}>
+              <span className={styles.runningLabel}>Running inside</span>
+              {CLIENTS.map((client) => (
+                <span key={client} className={styles.client}>
+                  {client}
+                </span>
+              ))}
             </div>
-          ))}
+          </div>
+        </div>
+        <div className={styles.trustGrid}>
+          <div className={`${styles.trustCard} ${styles.trustDark}`}>
+            <div className={styles.trustVisual}>
+              {CONTROLS.map((control) => (
+                <div key={control} className={styles.control}>
+                  <span className={styles.check} aria-hidden="true">
+                    ✓
+                  </span>
+                  {control}
+                </div>
+              ))}
+            </div>
+            <div className={styles.trustCaption}>
+              <h3 className={styles.trustCardTitle}>Built for IT review</h3>
+              <p className={styles.trustCardText}>Procurement-ready from the first call.</p>
+            </div>
+          </div>
+          <div className={styles.trustCard}>
+            <div className={styles.trustVisual}>
+              <div className={styles.claim}>
+                <span className={`${styles.claimTag} ${styles.claimVerified}`}>Verified</span>
+                <div className={styles.claimText}>
+                  Raised €18M Series A{" "}
+                  <span className={styles.claimLink} aria-hidden="true">
+                    ↗
+                  </span>
+                </div>
+              </div>
+              <div className={styles.claim}>
+                <span className={`${styles.claimTag} ${styles.claimInferred}`}>Inferred</span>
+                <div className={styles.claimText}>Seeking a manufacturing partner</div>
+              </div>
+            </div>
+            <div className={styles.trustCaption}>
+              <h3 className={styles.trustCardTitle}>Traceable answers</h3>
+              <p className={styles.trustCardText}>Every claim sourced and labeled.</p>
+            </div>
+          </div>
+          <div className={styles.trustCard}>
+            <div className={`${styles.trustVisual} ${styles.log}`}>
+              {ACTIVITY.map((entry) => (
+                <div key={entry.time}>
+                  <span className={styles.logTime}>{entry.time}</span>
+                  {"\u00a0\u00a0"}
+                  {entry.text}
+                </div>
+              ))}
+              <div className={styles.readOnly}>
+                <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="5" y="11" width="14" height="10" rx="2" />
+                  <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+                </svg>
+                Read-only
+              </div>
+            </div>
+            <div className={styles.trustCaption}>
+              <h3 className={styles.trustCardTitle}>Auditable access</h3>
+              <p className={styles.trustCardText}>Permission-aware. Every query logged.</p>
+            </div>
+          </div>
         </div>
       </section>
 

@@ -1,0 +1,640 @@
+/* The engine band: four cards in a row, the open one wide and light, the others narrow and dark. */
+.band {
+  margin: clamp(48px, 6vw, 80px) var(--band-inset) clamp(88px, 11vw, 150px);
+  padding: clamp(40px, 4.5vw, 64px) clamp(16px, 4vw, 40px);
+  border-radius: var(--radius-band);
+  background: var(--ink);
+  color: var(--on-dark);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 2.4vw, 32px);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+}
+
+.title {
+  flex: 1 1 520px;
+  margin: 0;
+  font-weight: 500;
+  font-size: clamp(34px, 3.8vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  color: var(--on-dark);
+  text-wrap: balance;
+}
+
+.accent {
+  color: var(--lilac);
+}
+
+.lede {
+  flex: 0 1 380px;
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--on-dark-3);
+  text-wrap: pretty;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 12px;
+  min-height: 440px;
+}
+
+.card {
+  flex: 1 1 170px;
+  min-width: 0;
+  min-height: 180px;
+  border-radius: 24px;
+  background: var(--night-tab);
+  box-shadow: inset 0 0 0 1px var(--night-ring);
+  transition:
+    flex-grow 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+    background-color 0.35s ease;
+}
+
+.open {
+  flex: 999 1 560px;
+  background: var(--lilac-card);
+  box-shadow: none;
+}
+
+/* A closed card is one button. */
+.tab {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  height: 100%;
+  padding: 22px 20px;
+  border-radius: 24px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--lilac);
+  outline-offset: 3px;
+}
+
+.tabIcon {
+  fill: none;
+  stroke: var(--lilac);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tabText {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tabTitle {
+  color: var(--on-night-2);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.tab:hover .tabTitle {
+  color: var(--on-dark);
+}
+
+.tabSummary {
+  color: var(--on-dark-3);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+/* The open card. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  padding: clamp(20px, 2vw, 26px);
+  outline: none;
+}
+
+.panelHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.panelTitles {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 280px;
+}
+
+.panelLabel {
+  color: var(--primary-deep);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.panelTitle {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(24px, 2.2vw, 30px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.panelText {
+  flex: 0 1 300px;
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.visualSlot {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+}
+
+/* Time left before the next card opens. */
+.track {
+  height: 3px;
+  border-radius: 3px;
+  background: var(--lilac-track);
+}
+
+.progress {
+  width: 0;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--primary);
+  animation: countdown 6s linear forwards;
+}
+
+@keyframes countdown {
+  to {
+    width: 100%;
+  }
+}
+
+/* The white product moment inside the open card. */
+.visual {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow-panel);
+}
+
+.company {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.meter {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--line-soft);
+}
+
+.thin {
+  height: 6px;
+  border-radius: 6px;
+}
+
+.fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: grow 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+/* Discover */
+.discover {
+  gap: 14px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-soft);
+}
+
+.searchIcon {
+  flex: none;
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.query {
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 18px;
+  margin-left: 2px;
+  vertical-align: -3px;
+  background: var(--primary);
+  animation: blink 1s steps(1) infinite;
+}
+
+.found {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.foundRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(56px, 1fr) 32px;
+  align-items: center;
+  gap: 14px;
+}
+
+.foundScore {
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 500;
+  text-align: right;
+}
+
+/* Assess */
+.assess {
+  gap: 4px;
+}
+
+.sources {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 8px;
+}
+
+.source {
+  padding: 8px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--primary-soft);
+  color: var(--ink);
+  font-size: 14px;
+  text-align: center;
+}
+
+.funnel {
+  display: block;
+  width: 100%;
+  height: 26px;
+  fill: none;
+  stroke: var(--lilac-line);
+  stroke-width: 1.5;
+}
+
+.queue {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+}
+
+.queueRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+}
+
+.queueRow + .queueRow {
+  border-top: 1px solid var(--line-soft);
+}
+
+.queueText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.note {
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+.route {
+  flex: none;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.routePartner {
+  background: var(--success-soft);
+  color: var(--success-ink);
+}
+
+.routeReview {
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+}
+
+.routeDecline {
+  background: var(--neutral-soft);
+  color: var(--ink-2);
+}
+
+/* Rank */
+.rank {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 20px;
+}
+
+.dial {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.ring {
+  position: relative;
+  width: 132px;
+  height: 132px;
+}
+
+.ringTrack,
+.ringFill {
+  fill: none;
+  stroke-width: 12;
+}
+
+.ringTrack {
+  stroke: var(--line-soft);
+}
+
+.ringFill {
+  stroke: var(--primary);
+  stroke-linecap: round;
+  stroke-dasharray: 415;
+  stroke-dashoffset: 415;
+  animation: ring 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s forwards;
+}
+
+.ringLabel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ringScore {
+  color: var(--ink);
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.ringCompany {
+  margin-top: 4px;
+  color: var(--ink-3);
+  font-size: 11px;
+}
+
+.confidence {
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--success-soft);
+  color: var(--success-ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.criteria {
+  display: flex;
+  flex: 1 1 260px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.criterion {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.criterionHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.criterionName,
+.criterionScore {
+  color: var(--ink);
+}
+
+.weight {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* Report */
+.report {
+  gap: 12px;
+}
+
+.memoHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.memoCompany {
+  color: var(--ink);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.memoLabel {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.verdict {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--primary);
+  color: var(--on-dark);
+}
+
+.verdictIcon {
+  fill: none;
+  stroke: var(--on-dark);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.verdictText {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.evidence {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+.evidenceTag {
+  flex: none;
+  width: 86px;
+  padding: 5px 0;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.evidenceVerified {
+  background: var(--success-soft);
+  color: var(--success-ink);
+}
+
+.evidenceInferred {
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+}
+
+.evidenceText {
+  flex: 1;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.sourceIcon {
+  fill: none;
+  stroke: var(--ink-3);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Each row rises in, staggered by its inline animation-delay. */
+.enter {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+
+@keyframes rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes ring {
+  to {
+    stroke-dashoffset: 67;
+  }
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enter,
+  .fill,
+  .ringFill,
+  .progress,
+  .card {
+    animation: none;
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .ringFill {
+    stroke-dashoffset: 67;
+  }
+}

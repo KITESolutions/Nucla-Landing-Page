@@ -10,9 +10,9 @@ import styles from "./FreeDiscoveryPage.module.css";
 const PROMISES = ["Free", "2 free discovery prompts", "No credit card needed"];
 
 const STEPS = [
-  { n: "01", title: "Describe your thesis", text: "One sentence in plain English is enough." },
-  { n: "02", title: "Nucla searches live data", text: "Funding, hiring, news, launches and more." },
-  { n: "03", title: "Get a ranked list", text: "Each company scored, with the reasoning, right here on the page." },
+  { title: "Describe your thesis", text: "One sentence in plain English is enough." },
+  { title: "Nucla searches live data", text: "Funding, hiring, news, launches and more." },
+  { title: "Get a ranked list", text: "Each company scored, with the reasoning, right here on the page." },
 ];
 
 export function FreeDiscoveryPage() {
@@ -21,7 +21,6 @@ export function FreeDiscoveryPage() {
     <>
       <PageHero
         id="start"
-        badge="Free for venture & innovation teams"
         title="Discover new companies"
         accent="scored against your thesis."
         layout="stacked"
@@ -48,8 +47,7 @@ export function FreeDiscoveryPage() {
         </SectionTitle>
         <ol className={styles.stepGrid}>
           {STEPS.map((step) => (
-            <li key={step.n} className={styles.stepCard}>
-              <div className={styles.stepNumber}>{step.n}</div>
+            <li key={step.title} className={styles.stepCard}>
               <div className={styles.stepTitle}>{step.title}</div>
               <p className={styles.stepText}>{step.text}</p>
             </li>

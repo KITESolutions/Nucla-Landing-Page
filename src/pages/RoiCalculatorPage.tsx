@@ -83,16 +83,14 @@ export function RoiCalculatorPage() {
   return (
     <>
       <PageHero
-        eyebrow="ROI calculator"
         title="What your team gets back"
         accent="in a year."
-        lede="Enter your own numbers to see how many analyst hours Nucla gives back across first-pass review and partner-call prep."
+        lede="Enter your own numbers to see the analyst hours Nucla gives back."
       />
 
       <section className={styles.calculator} aria-label="Calculator">
         <div className={styles.grid}>
           <div className={styles.inputs}>
-            <Eyebrow>Your team</Eyebrow>
             <div>
               <div className={styles.unitRow}>
                 <span className={styles.label}>Companies reviewed</span>
@@ -167,9 +165,9 @@ export function RoiCalculatorPage() {
           <h2 className={styles.assumptionsTitle}>The assumptions</h2>
           <div>
             <ol className={styles.assumptionList}>
-              {ASSUMPTIONS.map((text, index) => (
+              {ASSUMPTIONS.map((text) => (
                 <li key={text} className={styles.assumption}>
-                  <span className={styles.assumptionNumber}>{String(index + 1).padStart(2, "0")}</span>
+                  <span className={styles.assumptionDot} aria-hidden="true" />
                   <span className={styles.assumptionText}>{text}</span>
                 </li>
               ))}

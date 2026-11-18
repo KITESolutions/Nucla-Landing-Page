@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { freeDiscoveryEnabled } from "@/lib/config";
-import { linkedIn, routes, salesEmail } from "@/lib/routes";
+import { linkedIn, routes, salesEmail, salesPhone } from "@/lib/routes";
 
 import styles from "./Footer.module.css";
 
@@ -31,6 +31,7 @@ export function Footer() {
         <div className={styles.contact}>
           <span>4845 Pearl East Circle, Boulder, CO</span>
           <a href={`mailto:${salesEmail}`}>{salesEmail}</a>
+          <a href={salesPhone.href}>{salesPhone.label}</a>
           <a href={linkedIn} target="_blank" rel="noopener noreferrer" className={styles.linkedIn}>
             LinkedIn <span aria-hidden="true">↗</span>
             <span className="visually-hidden"> (opens in a new tab)</span>

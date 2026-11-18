@@ -26,31 +26,6 @@
   text-transform: uppercase;
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 12px;
-  border-radius: var(--radius-pill);
-  background: var(--success-tint);
-  color: var(--success);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.badgeDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--success);
-}
-
-.badge + .title {
-  margin-top: 24px;
-}
-
 .title {
   margin: 0 auto;
   font-weight: 500;
@@ -106,7 +81,7 @@
 
 .lede {
   max-width: var(--lede-width);
-  margin: 28px auto 0;
+  margin: var(--lede-gap) auto 0;
   font-size: clamp(18px, 1.6vw, 21px);
   line-height: 1.55;
   color: var(--on-dark-2);

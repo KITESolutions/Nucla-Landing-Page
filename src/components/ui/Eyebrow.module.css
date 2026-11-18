@@ -5,21 +5,8 @@
   text-transform: uppercase;
 }
 
-.primary {
-  color: var(--primary);
-}
-
 .muted {
   color: var(--ink-3);
-}
-
-.success {
-  color: var(--success-ink);
-}
-
-.lilac {
-  color: var(--lilac-2);
-  letter-spacing: 0.12em;
 }
 
 .mint {

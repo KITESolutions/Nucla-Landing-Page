@@ -42,14 +42,7 @@
   background: var(--surface);
 }
 
-.stepNumber {
-  color: var(--primary);
-  font-family: var(--font-mono);
-  font-size: 12px;
-}
-
 .stepTitle {
-  margin-top: 18px;
   color: var(--ink);
   font-size: 22px;
   font-weight: 500;

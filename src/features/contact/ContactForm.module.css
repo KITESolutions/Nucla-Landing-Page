@@ -1,153 +1,59 @@
-/* The contact form from the redesign. */
+/* The contact form from the redesign: first name and work email. */
 .form {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-}
-
-.topics {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  min-width: 0;
-}
-
-.question,
-.label {
-  color: var(--ink);
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.question {
-  padding: 0;
-  margin-bottom: 12px;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.chip {
-  display: inline-flex;
-  align-items: center;
-  height: 44px;
-  padding: 0 18px;
-  border-radius: var(--radius-pill);
-  border: 1.5px solid var(--line-2);
-  background: var(--surface);
-  color: var(--ink);
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.chip:hover {
-  border-color: var(--ink-4);
-}
-
-.chip:focus-within {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
-.chipOn,
-.chipOn:hover {
-  border-color: var(--ink);
-  background: var(--ink);
-  color: var(--on-dark);
+  gap: 18px;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 16px;
 }
 
-.field {
+.label {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
 }
 
-.optional {
-  display: block;
-  margin-top: 6px;
-  color: var(--ink-3);
-  font-weight: 400;
-}
-
-.input,
-.textarea {
+.input {
   width: 100%;
+  height: 54px;
+  padding: 0 16px;
   border: 1.5px solid var(--line-2);
   border-radius: 14px;
+  outline: none;
   background: var(--surface);
   color: var(--ink);
   font-family: inherit;
   font-size: 16px;
 }
 
-.input {
-  height: 50px;
-  padding: 0 16px;
-  text-overflow: ellipsis;
-}
-
-.textarea {
-  min-height: 120px;
-  padding: 12px 16px;
-  line-height: 1.5;
-  resize: vertical;
-}
-
-.input::placeholder,
-.textarea::placeholder {
-  color: var(--ink-4);
-}
-
-.input:focus,
-.textarea:focus {
-  outline: none;
+.input:focus {
   border-color: var(--primary);
 }
 
-.input[aria-invalid="true"] {
-  border-color: var(--danger);
-}
-
-.error,
-.failure {
-  margin: 0;
+.error {
   color: var(--danger);
   font-size: 14px;
 }
 
-.failure a {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px 16px;
-}
-
 .send {
-  height: 52px;
+  height: 54px;
   padding: 0 28px;
   border: 0;
   border-radius: var(--radius-pill);
   background: var(--primary);
   color: var(--on-dark);
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
 }
@@ -156,31 +62,55 @@
   background: var(--primary-hover);
 }
 
-.send:disabled {
-  cursor: progress;
-  opacity: 0.8;
+.send:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
 }
 
-.note {
-  color: var(--ink-3);
-  font-size: 14px;
+.send:disabled {
+  opacity: 0.6;
+  cursor: default;
 }
 
 .thanks {
-  padding: 8px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
   outline: none;
+}
+
+.tick {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--success-soft);
+  color: var(--success-ink);
+  font-size: 20px;
+}
+
+.thanksBody {
+  min-width: 0;
 }
 
 .thanksTitle {
   color: var(--ink);
   font-size: 24px;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
 }
 
 .thanksText {
-  margin: 8px 0 0;
-  color: var(--ink-2);
+  margin: 6px 0 0;
   font-size: 16px;
   line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.address {
+  color: var(--ink);
+  font-weight: 500;
 }

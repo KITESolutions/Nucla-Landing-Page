@@ -10,4 +10,5 @@ export const routes = {
 export const contactForm = `${routes.contact}#contact-form`;
 export const appSignIn = "https://app.nucla.com";
 export const salesEmail = "sales@nucla.com";
+export const salesPhone = { label: "647-960-0959", href: "tel:+16479600959" };
 export const linkedIn = "https://www.linkedin.com/company/nucla/";

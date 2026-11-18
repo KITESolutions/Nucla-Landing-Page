@@ -6,7 +6,6 @@ import styles from "./Header.module.css";
 
 const NAV = [
   { to: routes.howItWorks, label: "How it works" },
-  { to: routes.roiCalculator, label: "ROI calculator" },
   { to: routes.contact, label: "Contact us" },
 ];
 

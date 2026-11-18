@@ -1,5 +1,3 @@
-import { Eyebrow } from "@/components/ui/Eyebrow";
-
 import styles from "./CustomerProof.module.css";
 
 interface Props {
@@ -26,7 +24,6 @@ export function CustomerProof({ variant = "card" }: Props) {
   );
   const quote = (
     <figure className={styles[`figure_${variant}`]}>
-      {variant === "feature" && <Eyebrow className={styles.eyebrow}>Customer</Eyebrow>}
       <blockquote className={styles[`quote_${variant}`]}>
         “There was a pre-Nucla Mars and a post-Nucla Mars. It was nearly impossible to see our relationships
         cross-functionally before you guys came along.”

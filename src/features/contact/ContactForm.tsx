@@ -5,60 +5,47 @@ import { salesEmail } from "@/lib/routes";
 import styles from "./ContactForm.module.css";
 import { type ContactRequest, ContactError, sendContactRequest } from "./hubspot";
 
-const TOPICS = ["Book a demo", "Pricing", "Partnership", "Something else"];
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-/** Free mail providers; the form asks for a work email. */
-const PERSONAL_DOMAINS = new Set([
-  "gmail.com", "googlemail.com", "yahoo.com", "yahoo.co.uk", "ymail.com", "hotmail.com", "outlook.com", "live.com",
-  "msn.com", "icloud.com", "me.com", "mac.com", "aol.com", "proton.me", "protonmail.com", "gmx.com", "gmx.de",
-  "yandex.com", "mail.com", "zoho.com",
-]);
+const EMAIL = /^[^\s@]+@([^\s@]+\.[^\s@]+)$/;
+/** The redesign's free mail providers. Personal-only brands match any ending (gmail.com, yahoo.co.uk). Names that are
+ * also companies or common subdomains (Verizon, AT&T, Comcast, mail.acme.com) match only the mail domain itself. */
+const PERSONAL_BRANDS =
+  /^(gmail|googlemail|yahoo|ymail|outlook|hotmail|live|msn|icloud|aol|proton|protonmail|gmx|yandex|zoho|qq|163|126|fastmail|tutanota)\./i;
+const PERSONAL_DOMAINS = new Set(["me.com", "mac.com", "pm.me", "mail.com", "hey.com", "web.de", "comcast.net", "att.net", "verizon.net"]);
 
-type Field = "name" | "email" | "company" | "role";
-type Errors = Partial<Record<Field, string>>;
-const ORDER: Field[] = ["name", "email", "company", "role"];
+type Field = "firstName" | "email";
+interface Problem {
+  field: Field | null;
+  message: string;
+}
 
-function check(request: ContactRequest): Errors {
-  const errors: Errors = {};
-  if (!request.name.trim()) errors.name = "Enter your name.";
-  const email = request.email.trim().toLowerCase();
-  if (!EMAIL.test(email)) errors.email = "Enter a valid email address.";
-  else if (PERSONAL_DOMAINS.has(email.split("@")[1])) errors.email = "Use your work email.";
-  if (!request.company.trim()) errors.company = "Enter your company.";
-  if (!request.role.trim()) errors.role = "Enter your role.";
-  return errors;
+function check(request: ContactRequest): Problem | null {
+  if (!request.firstName.trim()) return { field: "firstName", message: "Please add your first name." };
+  const domain = request.email.trim().toLowerCase().match(EMAIL)?.[1];
+  if (!domain) return { field: "email", message: "Enter a valid email address." };
+  if (PERSONAL_BRANDS.test(domain) || PERSONAL_DOMAINS.has(domain)) return { field: "email", message: "Please use your work email." };
+  return null;
 }
 
 /** The contact form from the redesign. Each message goes to Nucla's HubSpot, where sales picks it up. */
 export function ContactForm() {
   const id = useId();
-  const [request, setRequest] = useState<ContactRequest>({
-    topic: TOPICS[0],
-    name: "",
-    email: "",
-    company: "",
-    role: "",
-    message: "",
-  });
-  const [errors, setErrors] = useState<Errors>({});
+  const [request, setRequest] = useState<ContactRequest>({ firstName: "", email: "" });
+  const [problem, setProblem] = useState<Problem | null>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
-  const [failure, setFailure] = useState("");
   const fields = useRef<Partial<Record<Field, HTMLInputElement | null>>>({});
   const thanks = useRef<HTMLDivElement>(null);
 
-  const set = (key: keyof ContactRequest) => (value: string) => {
-    setRequest((now) => ({ ...now, [key]: value }));
-    if (key in errors) setErrors((now) => ({ ...now, [key]: undefined }));
+  const set = (field: Field) => (value: string) => {
+    setRequest((now) => ({ ...now, [field]: value }));
+    setProblem(null);
   };
 
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     if (status === "sending") return;
     const found = check(request);
-    setErrors(found);
-    setFailure("");
-    const first = ORDER.find((field) => found[field]);
-    if (first) return fields.current[first]?.focus();
+    setProblem(found);
+    if (found?.field) return fields.current[found.field]?.focus();
     setStatus("sending");
     try {
       await sendContactRequest(request);
@@ -67,10 +54,10 @@ export function ContactForm() {
     } catch (error) {
       setStatus("idle");
       if (error instanceof ContactError && error.field === "email") {
-        setErrors({ email: error.message });
+        setProblem({ field: "email", message: error.message });
         fields.current.email?.focus();
       } else {
-        setFailure("We couldn't send your message. Try again in a moment.");
+        setProblem({ field: null, message: "We couldn't send your message. Try again in a moment." });
       }
     }
   };
@@ -78,96 +65,62 @@ export function ContactForm() {
   if (status === "sent") {
     return (
       <div ref={thanks} tabIndex={-1} role="status" className={styles.thanks}>
-        <div className={styles.thanksTitle}>Thanks, we've got your message.</div>
-        <p className={styles.thanksText}>A real person on our team will read it and get back to you.</p>
+        <span className={styles.tick} aria-hidden="true">
+          ✓
+        </span>
+        <div className={styles.thanksBody}>
+          <div className={styles.thanksTitle}>Thanks, {request.firstName.trim()}.</div>
+          <p className={styles.thanksText}>
+            We'll reply to <span className={styles.address}>{request.email.trim()}</span>.
+          </p>
+        </div>
       </div>
     );
   }
 
+  const errorId = `${id}-error`;
   const input = (field: Field, label: string, placeholder: string, extra: { type?: string; autoComplete: string }) => (
-    <div className={styles.field}>
-      <label htmlFor={`${id}-${field}`} className={styles.label}>
-        {label}
-      </label>
+    <label className={styles.label}>
+      {label}
       <input
         ref={(node) => {
           fields.current[field] = node;
         }}
-        id={`${id}-${field}`}
         type={extra.type ?? "text"}
+        name={field === "firstName" ? "firstname" : "email"}
         autoComplete={extra.autoComplete}
         value={request[field]}
         onChange={(event) => set(field)(event.target.value)}
         placeholder={placeholder}
         maxLength={field === "email" ? 320 : 200}
-        aria-invalid={errors[field] ? true : undefined}
-        aria-describedby={errors[field] ? `${id}-${field}-error` : undefined}
+        aria-invalid={problem?.field === field || undefined}
+        aria-describedby={problem?.field === field ? errorId : undefined}
         className={styles.input}
       />
-      {errors[field] && (
-        <p id={`${id}-${field}-error`} className={styles.error}>
-          {errors[field]}
-        </p>
-      )}
-    </div>
+    </label>
   );
 
   return (
     // The form checks the fields itself, so the browser's own messages don't replace ours.
     <form onSubmit={submit} noValidate className={styles.form}>
-      <fieldset className={styles.topics}>
-        <legend className={styles.question}>What can we help with?</legend>
-        <div className={styles.chips}>
-          {TOPICS.map((topic) => (
-            <label key={topic} className={topic === request.topic ? `${styles.chip} ${styles.chipOn}` : styles.chip}>
-              <input
-                type="radio"
-                name={`${id}-topic`}
-                value={topic}
-                checked={topic === request.topic}
-                onChange={() => set("topic")(topic)}
-                className="visually-hidden"
-              />
-              {topic}
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
       <div className={styles.grid}>
-        {input("name", "Full name", "Jane Smith", { autoComplete: "name" })}
+        {input("firstName", "First name", "Jane", { autoComplete: "given-name" })}
         {input("email", "Work email", "you@company.com", { type: "email", autoComplete: "email" })}
-        {input("company", "Company", "Company name", { autoComplete: "organization" })}
-        {input("role", "Role", "Head of Corporate Ventures", { autoComplete: "organization-title" })}
       </div>
-
-      <div className={styles.field}>
-        <label htmlFor={`${id}-message`} className={styles.label}>
-          Message <span className={styles.optional}>(optional)</span>
-        </label>
-        <textarea
-          id={`${id}-message`}
-          value={request.message}
-          onChange={(event) => set("message")(event.target.value)}
-          placeholder="What are you looking for, and how many companies does your team review a year?"
-          rows={4}
-          maxLength={2000}
-          className={styles.textarea}
-        />
-      </div>
-
-      {failure && (
-        <p role="alert" className={styles.failure}>
-          {failure} You can also write to <a href={`mailto:${salesEmail}`}>{salesEmail}</a>.
-        </p>
+      {problem && (
+        <div id={errorId} role="alert" className={styles.error}>
+          {problem.message}
+          {!problem.field && (
+            <>
+              {" "}
+              You can also write to <a href={`mailto:${salesEmail}`}>{salesEmail}</a>.
+            </>
+          )}
+        </div>
       )}
-
-      <div className={styles.actions}>
-        <button type="submit" disabled={status === "sending"} className={styles.send}>
-          {status === "sending" ? "Sending…" : "Send message →"}
-        </button>
-        <span className={styles.note}>Work email only. We never share your details.</span>
-      </div>
+      <button type="submit" disabled={status === "sending"} className={styles.send}>
+        {status === "sending" ? "Sending…" : "Send →"}
+      </button>
     </form>
   );
 }
