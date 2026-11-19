@@ -54,12 +54,6 @@
   gap: 12px;
 }
 
-@container (min-width: 650px) {
-  .cards {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 /* The expanded card, three collapsed cards and three gaps need 1106px. */
 @container (min-width: 1106px) {
   .cards {
@@ -136,6 +130,28 @@
   color: var(--on-dark-3);
   font-size: 15px;
   line-height: 1.45;
+}
+
+@container (width < 1106px) {
+  .card {
+    min-height: auto;
+  }
+
+  .tab {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+
+  .tabIcon {
+    flex: none;
+  }
+
+  .tabText {
+    gap: 4px;
+  }
 }
 
 /* The open card. */
