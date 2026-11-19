@@ -75,12 +75,12 @@ describe("the form", () => {
     expect(reducer(failed, { type: "setPrompt", prompt: "robots" }).formError).toBe("");
   });
 
-  it("loads strategies without preselecting one", () => {
+  it("defaults to acquisition and keeps an explicit choice", () => {
     const lenses = [
       { key: "acquisition_generic", name: "General Acquisition", description: "" },
       { key: "partnership_strategic", name: "Strategic Partnership", description: "" },
     ];
-    expect(reducer(initialState(), { type: "lensesLoaded", lenses }).lens).toBe("");
+    expect(reducer(initialState(), { type: "lensesLoaded", lenses }).lens).toBe("acquisition_generic");
     const chosen = reducer(initialState(), { type: "setLens", lens: "partnership_strategic" });
     expect(reducer(chosen, { type: "lensesLoaded", lenses }).lens).toBe("partnership_strategic");
   });

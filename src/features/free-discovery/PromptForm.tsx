@@ -31,16 +31,16 @@ export function PromptForm({ lenses, lens, prompt, error, focusRef, onLens, onPr
     <>
       <form onSubmit={(event) => { event.preventDefault(); onSubmit(); }}>
         {lenses.length > 0 && (
-          <fieldset className={styles.strategies} aria-describedby={error === MESSAGES.chooseStrategy ? `${id}-error` : undefined}>
-            <legend className={styles.groupLabel}>Choose a strategy</legend>
+          <fieldset className={styles.strategies} aria-describedby={`${id}-strategy-hint`}>
+            <legend className={styles.groupLabel}>Scoring strategy</legend>
+            <p id={`${id}-strategy-hint`} className={styles.strategyHelp}>Your strategy shapes how Nucla scores and ranks your matches.</p>
             <div className={styles.strategyGrid}>
-              {lenses.map((option, index) => {
+              {lenses.map((option) => {
                 const copy = STRATEGIES[option.key] ?? { title: option.name, description: option.description };
-                const optionId = `${id}-strategy-${index}`;
+                const optionId = `${id}-strategy-${option.key}`;
                 return (
                   <label key={option.key} className={styles.strategy}>
                     <input
-                      ref={error === MESSAGES.chooseStrategy && index === 0 ? focusRef : undefined}
                       type="radio"
                       name={`${id}-strategy`}
                       value={option.key}
@@ -57,7 +57,6 @@ export function PromptForm({ lenses, lens, prompt, error, focusRef, onLens, onPr
                 );
               })}
             </div>
-            {error === MESSAGES.chooseStrategy && <p id={`${id}-error`} className={styles.formError_card}>{error}</p>}
           </fieldset>
         )}
         <div className={styles.prompt_card}>
@@ -66,8 +65,8 @@ export function PromptForm({ lenses, lens, prompt, error, focusRef, onLens, onPr
             onChange={(event) => onPrompt(event.target.value)}
             maxLength={300}
             aria-label="Describe the companies you are looking for"
-            ref={error === MESSAGES.chooseStrategy ? undefined : focusRef}
-            aria-describedby={error && error !== MESSAGES.chooseStrategy ? `${id}-error` : undefined}
+            ref={focusRef}
+            aria-describedby={error ? `${id}-error` : undefined}
             aria-invalid={error === MESSAGES.tooShort || undefined}
             placeholder="Describe the companies you're looking for"
             className={styles.promptInput_card}
@@ -92,7 +91,7 @@ export function PromptForm({ lenses, lens, prompt, error, focusRef, onLens, onPr
           ))}
         </div>
       </div>
-      {error && error !== MESSAGES.chooseStrategy && (
+      {error && (
         <div id={`${id}-error`} className={styles.formError_card}>
           <span>{error}</span>
         </div>

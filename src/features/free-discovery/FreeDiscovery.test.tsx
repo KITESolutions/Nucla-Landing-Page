@@ -116,22 +116,16 @@ afterEach(() => {
 });
 
 describe("FreeDiscovery", () => {
-  it("requires a strategy choice and keeps example searches separate", async () => {
+  it("explains how strategy affects ranking and keeps examples separate", async () => {
     renderDiscovery();
-    const acquisition = await screen.findByRole("radio", { name: "Acquisition" });
-    const partnership = screen.getByRole("radio", { name: "Partnership" });
-    expect(screen.queryByRole("radio", { checked: true })).toBeNull();
+    const acquisition = await screen.findByRole("radio", { name: "Acquisition", checked: true });
+    const strategy = screen.getByRole("group", { name: "Scoring strategy" });
+    expect(description(strategy)).toBe("Your strategy shapes how Nucla scores and ranks your matches.");
     fireEvent.click(screen.getByRole("button", { name: "Robotics for food manufacturing" }));
-    expect(screen.queryByRole("radio", { checked: true })).toBeNull();
-    requestEmail();
-    await expectError(MESSAGES.chooseStrategy);
-    expect(document.activeElement).toBe(acquisition);
-    expect(screen.queryByRole("textbox", { name: "Your email" })).toBeNull();
-    expect(api.start).not.toHaveBeenCalled();
-    fireEvent.click(partnership);
-    expect(screen.getByRole("radio", { checked: true, name: "Partnership" })).toBe(partnership);
+    expect(screen.getByRole("radio", { checked: true })).toBe(acquisition);
     requestEmail();
     expect(document.activeElement).toBe(emailField());
+    expect(api.start).not.toHaveBeenCalled();
   });
 
   it("won't search, or spend a verification, without a valid email", async () => {
