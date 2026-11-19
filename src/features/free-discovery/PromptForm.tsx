@@ -11,6 +11,7 @@ const STRATEGIES: Partial<Record<string, { title: string; description: string }>
   acquisition_generic: { title: "Acquisition", description: "Find companies to buy." },
   minority_investment_strategic: { title: "Minority investment", description: "Find companies to invest in without buying control." },
   partnership_strategic: { title: "Partnership", description: "Find companies to work with." },
+  sales_general: { title: "Sales prospecting", description: "Find potential customers for what you sell." },
 };
 
 interface Props {

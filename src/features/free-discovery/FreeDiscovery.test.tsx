@@ -30,6 +30,7 @@ const UNAVAILABLE = "Free discovery isn't available right now. Please try again 
 const LENSES: Lens[] = [
   { key: "acquisition_generic", name: "General Acquisition", description: "Buy outright" },
   { key: "partnership_strategic", name: "Strategic Partnership", description: "Work together" },
+  { key: "sales_general", name: "Sales Prospecting", description: "Find potential customers" },
 ];
 const MATCHES: Match[] = [
   { name: "Tessel Robotics", url: "https://tessel.example", meta: "Munich · 51-200 employees", score: "9.1/10", reason: "Picking robots for food plants." },
@@ -126,6 +127,16 @@ describe("FreeDiscovery", () => {
     requestEmail();
     expect(document.activeElement).toBe(emailField());
     expect(api.start).not.toHaveBeenCalled();
+  });
+
+  it("starts a sales search with the platform's sales template key", async () => {
+    renderDiscovery();
+    fireEvent.click(await screen.findByRole("radio", { name: "Sales prospecting" }));
+    fireEvent.change(promptField(), { target: { value: "Distributors for warehouse software" } });
+    requestEmail();
+    fireEvent.change(emailField(), { target: { value: "ana@example.com" } });
+    submit();
+    await waitFor(() => expect(api.start).toHaveBeenCalledWith(expect.objectContaining({ lens: "sales_general" })));
   });
 
   it("won't search, or spend a verification, without a valid email", async () => {
