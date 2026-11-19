@@ -75,12 +75,12 @@ describe("the form", () => {
     expect(reducer(failed, { type: "setPrompt", prompt: "robots" }).formError).toBe("");
   });
 
-  it("picks the first strategy unless one is chosen", () => {
+  it("loads strategies without preselecting one", () => {
     const lenses = [
       { key: "acquisition_generic", name: "General Acquisition", description: "" },
       { key: "partnership_strategic", name: "Strategic Partnership", description: "" },
     ];
-    expect(reducer(initialState(), { type: "lensesLoaded", lenses }).lens).toBe("acquisition_generic");
+    expect(reducer(initialState(), { type: "lensesLoaded", lenses }).lens).toBe("");
     const chosen = reducer(initialState(), { type: "setLens", lens: "partnership_strategic" });
     expect(reducer(chosen, { type: "lensesLoaded", lenses }).lens).toBe("partnership_strategic");
   });

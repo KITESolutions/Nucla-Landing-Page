@@ -38,7 +38,7 @@ describe("with the free discovery settings", () => {
     renderAt(path);
     expect(screen.getByLabelText("Current URL").textContent).toBe("/#discovery");
     expect(screen.getByRole("heading", { name: /try a discovery now/i })).toBeTruthy();
-    expect(await screen.findByRole("button", { name: "Acquisition" })).toBeTruthy();
+    expect(await screen.findByRole("radio", { name: "Acquisition" })).toBeTruthy();
   });
 
   it("is on the home page and in the footer", async () => {
@@ -46,6 +46,6 @@ describe("with the free discovery settings", () => {
     expect(screen.getByRole("link", { name: "Try a free discovery →" }).getAttribute("href")).toBe("#discovery");
     expect(screen.getByRole("heading", { name: /try a discovery now/i })).toBeTruthy();
     expect(within(screen.getByRole("navigation", { name: "Footer" })).getByRole("link", { name: "Free discovery" }).getAttribute("href")).toBe("/#discovery");
-    await screen.findByRole("button", { name: "Acquisition" });
+    await screen.findByRole("radio", { name: "Acquisition" });
   });
 });

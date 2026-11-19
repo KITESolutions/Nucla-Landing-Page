@@ -85,7 +85,7 @@ async function expectError(message: string) {
 
 async function startSearch(email = "ana@acme.com") {
   const page = renderDiscovery();
-  fireEvent.click(await screen.findByRole("button", { name: "Strategic Partnership" }));
+  fireEvent.click(await screen.findByRole("radio", { name: "Partnership" }));
   fireEvent.click(screen.getByRole("button", { name: "Robotics for food manufacturing" }));
   requestEmail();
   fireEvent.change(emailField(), { target: { value: email } });
@@ -116,9 +116,27 @@ afterEach(() => {
 });
 
 describe("FreeDiscovery", () => {
+  it("requires a strategy choice and keeps example searches separate", async () => {
+    renderDiscovery();
+    const acquisition = await screen.findByRole("radio", { name: "Acquisition" });
+    const partnership = screen.getByRole("radio", { name: "Partnership" });
+    expect(screen.queryByRole("radio", { checked: true })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Robotics for food manufacturing" }));
+    expect(screen.queryByRole("radio", { checked: true })).toBeNull();
+    requestEmail();
+    await expectError(MESSAGES.chooseStrategy);
+    expect(document.activeElement).toBe(acquisition);
+    expect(screen.queryByRole("textbox", { name: "Your email" })).toBeNull();
+    expect(api.start).not.toHaveBeenCalled();
+    fireEvent.click(partnership);
+    expect(screen.getByRole("radio", { checked: true, name: "Partnership" })).toBe(partnership);
+    requestEmail();
+    expect(document.activeElement).toBe(emailField());
+  });
+
   it("won't search, or spend a verification, without a valid email", async () => {
     renderDiscovery();
-    await screen.findByRole("button", { name: "General Acquisition" });
+    fireEvent.click(await screen.findByRole("radio", { name: "Acquisition" }));
     fireEvent.change(promptField(), { target: { value: "Robotics for food manufacturing" } });
     expect(screen.queryByRole("textbox", { name: "Your email" })).toBeNull();
     requestEmail();
@@ -202,7 +220,7 @@ describe("FreeDiscovery", () => {
       },
     );
     renderDiscovery();
-    await screen.findByRole("button", { name: "General Acquisition" });
+    await screen.findByRole("radio", { name: "Acquisition" });
     const visible = (ratio: number) =>
       act(() => onChange([{ intersectionRatio: ratio } as IntersectionObserverEntry], {} as IntersectionObserver));
 
@@ -256,7 +274,7 @@ describe("FreeDiscovery", () => {
   it("says nothing more when the search handed back differs only in its spacing", async () => {
     api.start.mockResolvedValue({ search_id: SEARCH_ID, resumed: true });
     renderDiscovery();
-    fireEvent.click(await screen.findByRole("button", { name: "Strategic Partnership" }));
+    fireEvent.click(await screen.findByRole("radio", { name: "Partnership" }));
     fireEvent.change(promptField(), { target: { value: "Robotics  for food\tmanufacturing" } });
     requestEmail();
     fireEvent.change(emailField(), { target: { value: "ana@acme.com" } });
@@ -365,7 +383,7 @@ describe("FreeDiscovery", () => {
 
   it("asks for a longer description before spending a search", async () => {
     renderDiscovery();
-    await screen.findByRole("button", { name: "General Acquisition" });
+    fireEvent.click(await screen.findByRole("radio", { name: "Acquisition" }));
     fireEvent.change(promptField(), { target: { value: "ai" } });
     requestEmail();
 
@@ -446,7 +464,7 @@ describe("FreeDiscovery", () => {
     expect(getToken).not.toHaveBeenCalled();
     expect(api.start).not.toHaveBeenCalled();
     // The strategies arrive, and the alert that they were missing goes with them.
-    expect(await screen.findByRole("button", { name: "General Acquisition" })).toBeTruthy();
+    expect(await screen.findByRole("radio", { name: "Acquisition" })).toBeTruthy();
     expect(screen.queryByText(UNAVAILABLE, VISIBLE)).toBeNull();
     expect(status().textContent).toBe("");
   });
@@ -477,7 +495,7 @@ describe("FreeDiscovery", () => {
 describe("FreeDiscovery for screen readers and keyboards", () => {
   it("labels the email, and links the hint and each error to the field it's about", async () => {
     renderDiscovery();
-    await screen.findByRole("button", { name: "General Acquisition" });
+    fireEvent.click(await screen.findByRole("radio", { name: "Acquisition" }));
     fireEvent.change(promptField(), { target: { value: "Robotics for food manufacturing" } });
     requestEmail();
     const email = emailField();

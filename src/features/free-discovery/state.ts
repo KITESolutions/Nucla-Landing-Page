@@ -59,6 +59,7 @@ export type Action =
 export const MESSAGES = {
   unavailable: "Free discovery isn't available right now. Please try again later.",
   tooShort: "Describe the companies you want in a few words.",
+  chooseStrategy: "Choose a strategy to continue.",
   invalidEmail: "Enter a valid email address.",
   noMatches: "No strong matches for that description. That search didn't count, so try describing it differently.",
   verification: "We couldn't verify this browser. Refresh the page and try again.",
@@ -136,16 +137,15 @@ export function reducer(state: State, action: Action): State {
       return {
         ...state,
         lenses: action.lenses,
-        lens: state.lens || action.lenses[0]?.key || "",
         formError: state.formError === MESSAGES.unavailable ? "" : state.formError,
       };
     case "lensesFailed":
       // Only the form needs the strategies; a resumed search carries on.
       return state.step === "idle" ? { ...state, formError: MESSAGES.unavailable } : state;
     case "setLens":
-      return { ...state, lens: action.lens };
+      return { ...state, lens: action.lens, formError: state.formError === MESSAGES.chooseStrategy ? "" : state.formError };
     case "setPrompt":
-      return { ...state, prompt: action.prompt, formError: "" };
+      return { ...state, prompt: action.prompt, formError: state.formError === MESSAGES.chooseStrategy ? state.formError : "" };
     case "setEmail":
       return { ...state, email: action.email, formError: "" };
     case "requestEmail":

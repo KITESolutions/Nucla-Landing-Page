@@ -150,10 +150,11 @@ export function useFreeDiscovery() {
 
   const requestEmail = () => {
     if (!freeDiscoveryEnabled) return dispatch({ type: "formError", message: MESSAGES.unavailable });
-    if (!state.lens) {
+    if (!state.lenses.length) {
       retryLenses();
       return dispatch({ type: "formError", message: MESSAGES.unavailable });
     }
+    if (!state.lens) return dispatch({ type: "formError", message: MESSAGES.chooseStrategy });
     if (state.prompt.trim().length < 3) return dispatch({ type: "formError", message: MESSAGES.tooShort });
     dispatch({ type: "requestEmail" });
   };
