@@ -6,7 +6,7 @@ import { contactForm } from "@/lib/routes";
 
 import styles from "./FreeDiscovery.module.css";
 import { Matches } from "./Matches";
-import { PromptForm } from "./PromptForm";
+import { DiscoveryEmailForm, PromptForm } from "./PromptForm";
 import { MESSAGES, type State } from "./state";
 import { useFreeDiscovery } from "./useFreeDiscovery";
 
@@ -14,7 +14,7 @@ const SEEN_RATIO = 0.3;
 
 /** The short message a screen reader hears for each step. */
 function announcement(state: State) {
-  if (state.step === "idle" && state.busy) return "Starting…";
+  if (state.step === "email" && state.busy) return "Starting…";
   if (state.step === "searching") return "Searching…";
   if (state.step === "results") return `${state.matches.length} ${state.matches.length === 1 ? "match" : "matches"} ready`;
   if (state.step === "stopped") return state.stop?.title ?? "";
@@ -22,7 +22,7 @@ function announcement(state: State) {
 }
 
 export function FreeDiscovery() {
-  const { state, setPrompt, setLens, setEmail, start, restart, formSeen, bookDemo } = useFreeDiscovery();
+  const { state, setPrompt, setLens, setEmail, requestEmail, editPrompt, start, restart, formSeen, bookDemo } = useFreeDiscovery();
   const strategy = state.lenses.find((option) => option.key === state.lens)?.name ?? "your strategy";
 
   // Each step replaces the last, so once the visitor acts, focus moves to the new step instead of falling to the
@@ -77,14 +77,24 @@ export function FreeDiscovery() {
         <PromptForm
           lenses={state.lenses}
           lens={state.lens}
+          prompt={state.prompt}
+          error={state.formError}
+          focusRef={setFocusTarget}
+          onLens={setLens}
+          onPrompt={setPrompt}
+          onSubmit={follow(requestEmail)}
+        />
+      )}
+
+      {state.step === "email" && (
+        <DiscoveryEmailForm
           email={state.email}
           prompt={state.prompt}
           busy={state.busy}
           error={state.formError}
           focusRef={setFocusTarget}
-          onLens={setLens}
           onEmail={setEmail}
-          onPrompt={setPrompt}
+          onEdit={follow(editPrompt)}
           onSubmit={follow(start)}
         />
       )}

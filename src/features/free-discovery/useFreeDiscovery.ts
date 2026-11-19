@@ -148,18 +148,21 @@ export function useFreeDiscovery() {
     };
   }, [polling, state.searchId, visitor]);
 
-  const start = useCallback(async () => {
-    if (state.busy) return;
+  const requestEmail = () => {
     if (!freeDiscoveryEnabled) return dispatch({ type: "formError", message: MESSAGES.unavailable });
-    // Without the strategies there's nothing to score against; don't spend a verification on it.
     if (!state.lens) {
       retryLenses();
       return dispatch({ type: "formError", message: MESSAGES.unavailable });
     }
+    if (state.prompt.trim().length < 3) return dispatch({ type: "formError", message: MESSAGES.tooShort });
+    dispatch({ type: "requestEmail" });
+  };
+
+  const start = useCallback(async () => {
+    if (state.step !== "email" || state.busy) return;
     const email = state.email.trim();
     if (!EMAIL.test(email)) return dispatch({ type: "formError", message: MESSAGES.invalidEmail });
     const query = state.prompt.trim();
-    if (query.length < 3) return dispatch({ type: "formError", message: MESSAGES.tooShort });
     dispatch({ type: "busy", busy: true });
     try {
       const turnstile_token = await getToken();
@@ -187,13 +190,15 @@ export function useFreeDiscovery() {
     } finally {
       dispatch({ type: "busy", busy: false });
     }
-  }, [getToken, state.busy, state.email, state.lens, state.prompt, visitor]);
+  }, [getToken, state.busy, state.email, state.lens, state.prompt, state.step, visitor]);
 
   return {
     state,
     setPrompt: (prompt: string) => dispatch({ type: "setPrompt", prompt }),
     setLens: (lens: string) => dispatch({ type: "setLens", lens }),
     setEmail: (email: string) => dispatch({ type: "setEmail", email }),
+    requestEmail,
+    editPrompt: () => dispatch({ type: "editPrompt" }),
     start,
     restart: () => { clearSubmission(); dispatch({ type: "restart" }); },
     formSeen,

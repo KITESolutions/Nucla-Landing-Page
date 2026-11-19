@@ -63,7 +63,8 @@ function renderDiscovery() {
 
 const emailField = () => screen.getByRole("textbox", { name: "Your email" });
 const promptField = () => screen.getByRole("textbox", { name: "Describe the companies you are looking for" });
-const submit = () => fireEvent.click(screen.getByRole("button", { name: "See my matches →" }));
+const requestEmail = () => fireEvent.click(screen.getByRole("button", { name: "See my matches →" }));
+const submit = () => fireEvent.click(screen.getByRole("button", { name: "Find my matches →" }));
 /** The one status region a screen reader listens to. */
 const status = () => screen.getByRole("status");
 /** What the page shows, leaving out the status region that repeats it for screen readers. */
@@ -85,8 +86,9 @@ async function expectError(message: string) {
 async function startSearch(email = "ana@acme.com") {
   const page = renderDiscovery();
   fireEvent.click(await screen.findByRole("button", { name: "Strategic Partnership" }));
-  fireEvent.change(emailField(), { target: { value: email } });
   fireEvent.click(screen.getByRole("button", { name: "Robotics for food manufacturing" }));
+  requestEmail();
+  fireEvent.change(emailField(), { target: { value: email } });
   submit();
   return page;
 }
@@ -118,6 +120,11 @@ describe("FreeDiscovery", () => {
     renderDiscovery();
     await screen.findByRole("button", { name: "General Acquisition" });
     fireEvent.change(promptField(), { target: { value: "Robotics for food manufacturing" } });
+    expect(screen.queryByRole("textbox", { name: "Your email" })).toBeNull();
+    requestEmail();
+    expect(document.activeElement).toBe(emailField());
+    expect(getToken).not.toHaveBeenCalled();
+    expect(api.start).not.toHaveBeenCalled();
     submit();
     await expectError("Enter a valid email address.");
     fireEvent.change(emailField(), { target: { value: "ana@" } });
@@ -250,8 +257,9 @@ describe("FreeDiscovery", () => {
     api.start.mockResolvedValue({ search_id: SEARCH_ID, resumed: true });
     renderDiscovery();
     fireEvent.click(await screen.findByRole("button", { name: "Strategic Partnership" }));
-    fireEvent.change(emailField(), { target: { value: "ana@acme.com" } });
     fireEvent.change(promptField(), { target: { value: "Robotics  for food\tmanufacturing" } });
+    requestEmail();
+    fireEvent.change(emailField(), { target: { value: "ana@acme.com" } });
     submit();
 
     await shown("Scoring companies against your strategy...");
@@ -293,10 +301,13 @@ describe("FreeDiscovery", () => {
     await startSearch();
     fireEvent.click(await screen.findByRole("button", { name: "Run another discovery" }));
 
-    expect((emailField() as HTMLInputElement).value).toBe("ana@acme.com");
+    expect(screen.queryByRole("textbox", { name: "Your email" })).toBeNull();
     expect((promptField() as HTMLInputElement).value).toBe("");
     await waitFor(() => expect(document.activeElement).toBe(promptField()));
     expect(sessionStorage.getItem(SEARCH_KEY)).toBeNull();
+    fireEvent.change(promptField(), { target: { value: "Packaging suppliers" } });
+    requestEmail();
+    expect((emailField() as HTMLInputElement).value).toBe("ana@acme.com");
   });
 
   it("offers only a demo after the last free discovery", async () => {
@@ -334,6 +345,8 @@ describe("FreeDiscovery", () => {
 
     await expectError("We couldn't reach Nucla. Try again in a moment.");
     expect((emailField() as HTMLInputElement).value).toBe("ana@acme.com");
+    expect(screen.getByText("“Robotics for food manufacturing”")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Edit search" }));
     expect((promptField() as HTMLInputElement).value).toBe("Robotics for food manufacturing");
     expect(api.status).not.toHaveBeenCalled();
   });
@@ -353,9 +366,8 @@ describe("FreeDiscovery", () => {
   it("asks for a longer description before spending a search", async () => {
     renderDiscovery();
     await screen.findByRole("button", { name: "General Acquisition" });
-    fireEvent.change(emailField(), { target: { value: "ana@acme.com" } });
     fireEvent.change(promptField(), { target: { value: "ai" } });
-    submit();
+    requestEmail();
 
     await expectError("Describe the companies you want in a few words.");
     expect(api.start).not.toHaveBeenCalled();
@@ -428,9 +440,8 @@ describe("FreeDiscovery", () => {
     renderDiscovery();
     await expectError(UNAVAILABLE);
     api.lenses.mockResolvedValue(LENSES);
-    fireEvent.change(emailField(), { target: { value: "ana@acme.com" } });
     fireEvent.change(promptField(), { target: { value: "Robotics for food manufacturing" } });
-    submit();
+    requestEmail();
 
     expect(getToken).not.toHaveBeenCalled();
     expect(api.start).not.toHaveBeenCalled();
@@ -467,8 +478,10 @@ describe("FreeDiscovery for screen readers and keyboards", () => {
   it("labels the email, and links the hint and each error to the field it's about", async () => {
     renderDiscovery();
     await screen.findByRole("button", { name: "General Acquisition" });
+    fireEvent.change(promptField(), { target: { value: "Robotics for food manufacturing" } });
+    requestEmail();
     const email = emailField();
-    expect(email.getAttribute("placeholder")).toBe("Your work email");
+    expect(email.getAttribute("placeholder")).toBe("you@example.com");
     expect(email.getAttribute("maxlength")).toBe("320");
     expect(description(email)).toBe("Using your work email helps us tailor the results to your company.");
 
@@ -479,17 +492,15 @@ describe("FreeDiscovery for screen readers and keyboards", () => {
       "Enter a valid email address. Using your work email helps us tailor the results to your company.",
     );
     await waitFor(() => expect(document.activeElement).toBe(email));
+    fireEvent.click(screen.getByRole("button", { name: "Edit search" }));
     expect(promptField().getAttribute("aria-invalid")).toBeNull();
-
-    fireEvent.change(email, { target: { value: "ana@acme.com" } });
     fireEvent.change(promptField(), { target: { value: "ai" } });
-    submit();
+    requestEmail();
     await expectError("Describe the companies you want in a few words.");
     expect(promptField().getAttribute("aria-invalid")).toBe("true");
     expect(description(promptField())).toBe("Describe the companies you want in a few words.");
     await waitFor(() => expect(document.activeElement).toBe(promptField()));
-    expect(email.getAttribute("aria-invalid")).toBeNull();
-    expect(description(email)).toBe("Using your work email helps us tailor the results to your company.");
+    expect(screen.queryByRole("textbox", { name: "Your email" })).toBeNull();
   });
 
   it("moves focus to the search, then to the matches, announcing each in one region that stays", async () => {

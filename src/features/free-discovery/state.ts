@@ -1,12 +1,13 @@
 import type { Lens, Match, SearchStatus } from "./types";
 
 /**
- * idle      the form: strategy, email and description (optionally with an error)
+ * idle      the form: strategy and description
+ * email     capture an address before starting the search
  * searching the search runs, tailored to the visitor's company when we found it
  * results   the top matches, on the page
  * stopped   no more free discoveries for this visitor, or for today
  */
-export type Step = "idle" | "searching" | "results" | "stopped";
+export type Step = "idle" | "email" | "searching" | "results" | "stopped";
 
 export interface Stop {
   title: string;
@@ -44,6 +45,8 @@ export type Action =
   | { type: "setLens"; lens: string }
   | { type: "setPrompt"; prompt: string }
   | { type: "setEmail"; email: string }
+  | { type: "requestEmail" }
+  | { type: "editPrompt" }
   | { type: "busy"; busy: boolean }
   | { type: "started"; searchId: string; resumed?: boolean; typed?: string }
   | { type: "status"; status: SearchStatus; slow: boolean }
@@ -145,6 +148,10 @@ export function reducer(state: State, action: Action): State {
       return { ...state, prompt: action.prompt, formError: "" };
     case "setEmail":
       return { ...state, email: action.email, formError: "" };
+    case "requestEmail":
+      return { ...state, step: "email", formError: "" };
+    case "editPrompt":
+      return { ...state, step: "idle", formError: "" };
     case "busy":
       // A retry clears the last error, so the same error coming back is announced again.
       return action.busy ? { ...state, busy: true, formError: "" } : { ...state, busy: false };
@@ -177,7 +184,7 @@ export function reducer(state: State, action: Action): State {
         formError: state.resumed ? "" : MESSAGES.searchExpired,
       };
     case "formError":
-      return { ...state, step: "idle", searchId: null, formError: action.message };
+      return { ...state, step: state.step === "email" ? "email" : "idle", searchId: null, formError: action.message };
     case "stopped":
       return { ...state, step: "stopped", searchId: null, stop: action.stop };
     case "restart":
