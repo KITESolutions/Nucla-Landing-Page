@@ -1,0 +1,103 @@
+.header {
+  position: sticky;
+  top: 12px;
+  z-index: 30;
+  margin-top: 12px;
+  padding: 0 clamp(8px, 2vw, 28px);
+}
+
+.bar {
+  max-width: 1320px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 28px;
+  padding: 8px 8px 8px 22px;
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--shadow-float);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-self: start;
+}
+
+.logo {
+  display: block;
+  height: 24px;
+  width: auto;
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  justify-self: center;
+  font-size: 15px;
+}
+
+.navLink {
+  color: var(--ink);
+}
+
+.active {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-self: end;
+}
+
+.signIn,
+.demo {
+  display: inline-flex;
+  align-items: center;
+  height: 42px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.signIn {
+  padding: 0 18px;
+  border: 1.5px solid var(--hairline);
+  color: var(--ink);
+}
+
+.signIn:hover {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.demo {
+  gap: 6px;
+  padding: 0 20px;
+  background: var(--primary);
+  color: var(--on-dark);
+}
+
+.demo:hover {
+  background: var(--primary-hover);
+  color: var(--on-dark);
+}
+
+/* Phones: the logo and the main call to action only. */
+@media (max-width: 899px) {
+  .nav,
+  .signIn {
+    display: none;
+  }
+}

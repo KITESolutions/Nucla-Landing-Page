@@ -34,12 +34,19 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Lint and test
+        run: npm run lint && npm test
       - name: Build
         run: npm run build
+        env:
+          # Free discovery is built in only when both are set. Repository variables, not
+          # secrets: the API address and the Turnstile site key are public by design.
+          VITE_NUCLA_API_URL: ${{ vars.NUCLA_API_URL }}
+          VITE_TURNSTILE_SITE_KEY: ${{ vars.TURNSTILE_SITE_KEY }}
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:

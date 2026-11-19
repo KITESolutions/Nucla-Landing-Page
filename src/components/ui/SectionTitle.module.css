@@ -1,0 +1,29 @@
+.title {
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  color: var(--ink);
+}
+
+.balance {
+  text-wrap: balance;
+}
+
+.lg {
+  font-size: clamp(32px, 4.2vw, 56px);
+}
+
+.md {
+  font-size: clamp(30px, 3.8vw, 48px);
+}
+
+/* A short accent stays on one line; a stacked one is a full line that may wrap. */
+.accent {
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.accentLine {
+  color: var(--primary);
+}

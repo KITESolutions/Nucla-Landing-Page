@@ -1,0 +1,14 @@
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.muted {
+  color: var(--ink-3);
+}
+
+.mint {
+  color: var(--success);
+}

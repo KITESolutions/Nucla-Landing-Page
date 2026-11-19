@@ -1,0 +1,116 @@
+/* The contact form from the redesign: first name and work email. */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 16px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  height: 54px;
+  padding: 0 16px;
+  border: 1.5px solid var(--line-2);
+  border-radius: 14px;
+  outline: none;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.input:focus {
+  border-color: var(--primary);
+}
+
+.error {
+  color: var(--danger);
+  font-size: 14px;
+}
+
+.send {
+  height: 54px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-dark);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.send:hover {
+  background: var(--primary-hover);
+}
+
+.send:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.send:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.thanks {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  outline: none;
+}
+
+.tick {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--success-soft);
+  color: var(--success-ink);
+  font-size: 20px;
+}
+
+.thanksBody {
+  min-width: 0;
+}
+
+.thanksTitle {
+  color: var(--ink);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.thanksText {
+  margin: 6px 0 0;
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.address {
+  color: var(--ink);
+  font-weight: 500;
+}
