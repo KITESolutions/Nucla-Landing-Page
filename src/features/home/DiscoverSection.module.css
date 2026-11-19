@@ -5,14 +5,15 @@
 }
 
 .head {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: 24px 48px;
-  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: baseline;
   margin-bottom: 28px;
 }
 
 .note {
+  margin-inline-start: auto;
   text-align: right;
   color: var(--ink-3);
   font-family: var(--font-mono);
