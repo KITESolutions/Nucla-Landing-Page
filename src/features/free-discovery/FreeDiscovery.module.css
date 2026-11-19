@@ -1,15 +1,6 @@
-/* Free discovery, from the redesign's free-discovery page ("hero") and home section ("card"). */
+/* Free discovery on the homepage. */
 
 /* Frames */
-.panel_hero {
-  margin-top: clamp(32px, 4vw, 48px);
-  padding: clamp(12px, 1.6vw, 18px);
-  border-radius: 26px;
-  border: 1px solid var(--hairline-on-dark);
-  background: var(--panel-on-dark);
-  text-align: left;
-}
-
 .panel_card {
   padding: clamp(14px, 2.4vw, 28px);
   border-radius: clamp(20px, 2.2vw, 30px);
@@ -24,20 +15,10 @@
   gap: 8px;
 }
 
-/* The strategy picker (not in the redesign; Amar asked for it): centered on the hero, left on the card. */
-.lenses_hero {
-  justify-content: center;
-  margin-bottom: 12px;
-}
 
 .lenses_card {
   margin-bottom: 12px;
   padding: 0 4px;
-}
-
-.examples_hero {
-  justify-content: center;
-  margin-top: 12px;
 }
 
 .examples_card {
@@ -58,12 +39,6 @@
   color: var(--ink);
 }
 
-.chip_hero {
-  border: 1px solid var(--line-chip);
-  padding: 7px 12px;
-  font-size: 13px;
-}
-
 .chip_card {
   border: 1px solid var(--line);
   padding: 8px 14px;
@@ -78,17 +53,6 @@
 }
 
 /* Prompt */
-.prompt_hero {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 10px;
-  padding: 10px;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--line);
-  background: var(--surface);
-}
-
 .prompt_card {
   display: flex;
   flex-wrap: wrap;
@@ -98,7 +62,6 @@
   background: var(--primary-soft);
 }
 
-.promptInput_hero,
 .promptInput_card {
   min-width: 0;
   border: 0;
@@ -110,18 +73,9 @@
 }
 
 /* The inputs drop their own outline; the box around them shows focus instead. */
-.prompt_hero:focus-within,
 .prompt_card:focus-within {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
-}
-
-.promptInput_hero {
-  flex: 1 1 320px;
-  padding: 10px;
-  resize: none;
-  font-size: clamp(18px, 1.6vw, 21px);
-  line-height: 1.4;
 }
 
 .promptInput_card {
@@ -130,7 +84,6 @@
   font-size: clamp(17px, 1.6vw, 20px);
 }
 
-.promptButton_hero,
 .promptButton_card,
 .demoButton {
   border: 0;
@@ -140,27 +93,15 @@
   cursor: pointer;
 }
 
-.promptButton_hero:hover,
 .promptButton_card:hover,
 .demoButton:hover {
   background: var(--primary-hover);
   color: var(--on-dark);
 }
 
-.promptButton_hero:disabled,
 .promptButton_card:disabled {
   cursor: progress;
   opacity: 0.8;
-}
-
-.promptButton_hero {
-  flex: none;
-  margin-left: auto;
-  height: 50px;
-  padding: 0 24px;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 500;
 }
 
 .promptButton_card {
@@ -175,23 +116,6 @@
 }
 
 /* Errors under the prompt */
-.formError_hero {
-  margin-top: 12px;
-  text-align: center;
-}
-
-.formError_hero span {
-  display: inline-block;
-  max-width: 100%;
-  padding: 8px 14px;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--danger);
-  font-size: 14px;
-  line-height: 1.4;
-}
-
 .formError_card {
   margin-top: 12px;
   padding: 0 4px;
@@ -200,7 +124,6 @@
 }
 
 /* Email, before the description: the search only runs once we have it */
-.emailInput_hero,
 .emailInput_card {
   display: block;
   width: 100%;
@@ -214,48 +137,27 @@
   color: var(--ink);
 }
 
-.emailInput_hero:focus,
 .emailInput_card:focus {
   border-color: var(--primary);
-}
-
-.emailInput_hero {
-  height: 50px;
 }
 
 .emailInput_card {
   height: 52px;
 }
 
-.hint_hero,
 .hint_card {
   margin: 8px 0 12px;
   padding: 0 12px;
   font-size: 13px;
 }
 
-.hint_hero {
-  color: var(--on-dark-2);
-}
-
 .hint_card {
   color: var(--ink-3);
 }
 
-.privacy_hero,
 .privacy_card {
   margin: 12px 0 0;
   font-size: 12px;
-}
-
-.privacy_hero {
-  color: var(--on-dark-5);
-  text-align: center;
-}
-
-.privacy_hero a {
-  color: var(--lilac-2);
-  text-decoration: underline;
 }
 
 .privacy_card {
@@ -269,18 +171,10 @@
 }
 
 /* Searching */
-.progress_hero,
 .progress_card {
   display: flex;
   align-items: center;
   gap: 16px;
-}
-
-.progress_hero {
-  padding: 24px;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--line);
-  background: var(--surface);
 }
 
 .progress_card {

@@ -1,17 +1,13 @@
 import { type FormEvent, useId } from "react";
 
-import type { Variant } from "./FreeDiscovery";
 import styles from "./FreeDiscovery.module.css";
 import { MESSAGES } from "./state";
 import type { Lens } from "./types";
 
 const PRIVACY_URL = "https://app.nucla.com/legal/privacy";
-const EXAMPLES = ["AI for supply chain, Series B+", "Robotics for food manufacturing", "Packaging materials startups"];
-/** The free discovery page's placeholder already shows the climate example; the home card lists it. */
-const EXAMPLES_BY_VARIANT: Record<Variant, string[]> = { hero: EXAMPLES, card: ["Series A climate tech in Europe", ...EXAMPLES] };
+const EXAMPLES = ["Series A climate tech in Europe", "AI for supply chain, Series B+", "Robotics for food manufacturing", "Packaging materials startups"];
 
 interface Props {
-  variant: Variant;
   lenses: Lens[];
   lens: string;
   email: string;
@@ -27,7 +23,7 @@ interface Props {
 }
 
 /** Strategy, then the email (the search only runs once we have it), then the description. */
-export function PromptForm({ variant, lenses, lens, email, prompt, busy, error, focusRef, onLens, onEmail, onPrompt, onSubmit }: Props) {
+export function PromptForm({ lenses, lens, email, prompt, busy, error, focusRef, onLens, onEmail, onPrompt, onSubmit }: Props) {
   const id = useId();
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -45,14 +41,14 @@ export function PromptForm({ variant, lenses, lens, email, prompt, busy, error, 
   return (
     <>
       {lenses.length > 0 && (
-        <div className={`${styles.chipRow} ${styles[`lenses_${variant}`]}`} role="group" aria-label="Score the matches for">
+        <div className={`${styles.chipRow} ${styles.lenses_card}`} role="group" aria-label="Score the matches for">
           {lenses.map((option) => (
             <button
               key={option.key}
               type="button"
               aria-pressed={option.key === lens}
               title={option.description}
-              className={`${styles.chip} ${styles[`chip_${variant}`]} ${option.key === lens ? styles.chipOn : ""}`}
+              className={`${styles.chip} ${styles.chip_card} ${option.key === lens ? styles.chipOn : ""}`}
               onClick={() => onLens(option.key)}
             >
               {option.name}
@@ -76,43 +72,30 @@ export function PromptForm({ variant, lenses, lens, email, prompt, busy, error, 
           placeholder="Your work email"
           aria-describedby={emailError ? `${id}-error ${id}-hint` : `${id}-hint`}
           aria-invalid={emailError || undefined}
-          className={styles[`emailInput_${variant}`]}
+          className={styles.emailInput_card}
         />
-        <p id={`${id}-hint`} className={styles[`hint_${variant}`]}>Using your work email helps us tailor the results to your company.</p>
-        <div className={styles[`prompt_${variant}`]}>
-          {variant === "hero" ? (
-            <textarea
-              value={prompt}
-              onChange={(event) => onPrompt(event.target.value)}
-              rows={2}
-              maxLength={300}
-              aria-label="Describe the companies you are looking for"
-              {...promptField}
-              placeholder="Find me Series A climate tech companies in Europe"
-              className={styles.promptInput_hero}
-            />
-          ) : (
-            <input
-              value={prompt}
-              onChange={(event) => onPrompt(event.target.value)}
-              maxLength={300}
-              aria-label="Describe the companies you are looking for"
-              {...promptField}
-              placeholder="Describe the companies you're looking for"
-              className={styles.promptInput_card}
-            />
-          )}
-          <button type="submit" disabled={busy} className={styles[`promptButton_${variant}`]}>
+        <p id={`${id}-hint`} className={styles.hint_card}>Using your work email helps us tailor the results to your company.</p>
+        <div className={styles.prompt_card}>
+          <input
+            value={prompt}
+            onChange={(event) => onPrompt(event.target.value)}
+            maxLength={300}
+            aria-label="Describe the companies you are looking for"
+            {...promptField}
+            placeholder="Describe the companies you're looking for"
+            className={styles.promptInput_card}
+          />
+          <button type="submit" disabled={busy} className={styles.promptButton_card}>
             {label}
           </button>
         </div>
       </form>
-      <div className={`${styles.chipRow} ${styles[`examples_${variant}`]}`}>
-        {EXAMPLES_BY_VARIANT[variant].map((example) => (
+      <div className={`${styles.chipRow} ${styles.examples_card}`}>
+        {EXAMPLES.map((example) => (
           <button
             key={example}
             type="button"
-            className={`${styles.chip} ${styles[`chip_${variant}`]}`}
+            className={`${styles.chip} ${styles.chip_card}`}
             onClick={() => onPrompt(example)}
           >
             {example}
@@ -120,11 +103,11 @@ export function PromptForm({ variant, lenses, lens, email, prompt, busy, error, 
         ))}
       </div>
       {error && (
-        <div id={`${id}-error`} className={styles[`formError_${variant}`]}>
+        <div id={`${id}-error`} className={styles.formError_card}>
           <span>{error}</span>
         </div>
       )}
-      <p className={styles[`privacy_${variant}`]}>
+      <p className={styles.privacy_card}>
         Your email is saved with your request. Your matches appear on this page.{" "}
         <a href={PRIVACY_URL} target="_blank" rel="noopener noreferrer">
           Privacy policy

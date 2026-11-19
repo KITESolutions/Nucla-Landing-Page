@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import { discoverySectionId } from "@/lib/routes";
 import { freeDiscoveryEnabled } from "@/lib/config";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
@@ -38,7 +39,7 @@ export function HomeHero() {
         </p>
         <div className={styles.actions}>
           {freeDiscoveryEnabled && (
-            <a href="#discover" className={styles.tryButton}>
+            <a href={`#${discoverySectionId}`} className={styles.tryButton}>
               Try a free discovery →
             </a>
           )}

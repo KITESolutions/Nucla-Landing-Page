@@ -2,9 +2,8 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 import { Layout } from "@/components/layout/Layout";
 import { freeDiscoveryEnabled } from "@/lib/config";
-import { routes } from "@/lib/routes";
+import { discoverySectionId, routes } from "@/lib/routes";
 import { ContactPage } from "@/pages/ContactPage";
-import { FreeDiscoveryPage } from "@/pages/FreeDiscoveryPage";
 import { HomePage } from "@/pages/HomePage";
 import { HowItWorksPage } from "@/pages/HowItWorksPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
@@ -17,6 +16,11 @@ const HTML_PATHS: [string, string][] = [
     .filter((path) => path !== routes.home)
     .map((path): [string, string] => [`${path}.html`, path]),
 ];
+
+function LegacyDiscoveryRedirect() {
+  const { search } = useLocation();
+  return <Navigate to={{ pathname: routes.home, search, hash: freeDiscoveryEnabled ? `#${discoverySectionId}` : "" }} replace />;
+}
 
 function WithoutHtml({ to }: { to: string }) {
   const { search, hash } = useLocation();
@@ -33,7 +37,7 @@ export function App() {
         <Route path={routes.roiCalculator} element={<RoiCalculatorPage />} />
         <Route
           path={routes.freeDiscovery}
-          element={freeDiscoveryEnabled ? <FreeDiscoveryPage /> : <Navigate to={routes.home} replace />}
+          element={<LegacyDiscoveryRedirect />}
         />
         <Route path={routes.contact} element={<ContactPage />} />
         {HTML_PATHS.map(([path, to]) => (

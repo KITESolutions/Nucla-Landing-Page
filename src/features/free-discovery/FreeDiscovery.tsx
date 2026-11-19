@@ -10,9 +10,6 @@ import { PromptForm } from "./PromptForm";
 import { MESSAGES, type State } from "./state";
 import { useFreeDiscovery } from "./useFreeDiscovery";
 
-/** "hero" sits on the dark free discovery hero; "card" is the white card on the home page. */
-export type Variant = "hero" | "card";
-
 const SEEN_RATIO = 0.3;
 
 /** The short message a screen reader hears for each step. */
@@ -24,7 +21,7 @@ function announcement(state: State) {
   return state.formError;
 }
 
-export function FreeDiscovery({ variant }: { variant: Variant }) {
+export function FreeDiscovery() {
   const { state, setPrompt, setLens, setEmail, start, restart, formSeen, bookDemo } = useFreeDiscovery();
   const strategy = state.lenses.find((option) => option.key === state.lens)?.name ?? "your strategy";
 
@@ -71,14 +68,13 @@ export function FreeDiscovery({ variant }: { variant: Variant }) {
   };
 
   return (
-    <div ref={panel} className={styles[`panel_${variant}`]}>
+    <div ref={panel} className={styles.panel_card}>
       <div role="status" className="visually-hidden">
         {announcement(state)}
       </div>
 
       {state.step === "idle" && (
         <PromptForm
-          variant={variant}
           lenses={state.lenses}
           lens={state.lens}
           email={state.email}
@@ -94,7 +90,7 @@ export function FreeDiscovery({ variant }: { variant: Variant }) {
       )}
 
       {state.step === "searching" && (
-        <div className={styles[`progress_${variant}`]}>
+        <div className={styles.progress_card}>
           <Spinner />
           <div className={styles.grow}>
             <div ref={setFocusTarget} tabIndex={-1} className={styles.progressTitle}>

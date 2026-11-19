@@ -1,5 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, useLocation } from "react-router-dom";
 
 import { App } from "./App";
 import { freeDiscoveryApi } from "./features/free-discovery/api";
@@ -19,28 +19,33 @@ beforeEach(() => {
   ]);
 });
 
+function CurrentUrl() {
+  const { pathname, search, hash } = useLocation();
+  return <output aria-label="Current URL">{pathname}{search}{hash}</output>;
+}
+
 function renderAt(path: string) {
   render(
     <MemoryRouter initialEntries={[path]}>
       <App />
+      <CurrentUrl />
     </MemoryRouter>,
   );
 }
 
 describe("with the free discovery settings", () => {
-  it.each(["/free-discovery", "/free-discovery.html"])("has its own page at %s", async (path) => {
+  it.each(["/free-discovery", "/free-discovery.html"])("redirects %s to the homepage form", async (path) => {
     renderAt(path);
-    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe(
-      "Discover new companies scored against your thesis.",
-    );
+    expect(screen.getByLabelText("Current URL").textContent).toBe("/#discovery");
+    expect(screen.getByRole("heading", { name: /try a discovery now/i })).toBeTruthy();
     expect(await screen.findByRole("button", { name: "Acquisition" })).toBeTruthy();
   });
 
   it("is on the home page and in the footer", async () => {
     renderAt("/");
-    expect(screen.getByRole("link", { name: "Try a free discovery →" }).getAttribute("href")).toBe("#discover");
+    expect(screen.getByRole("link", { name: "Try a free discovery →" }).getAttribute("href")).toBe("#discovery");
     expect(screen.getByRole("heading", { name: /try a discovery now/i })).toBeTruthy();
-    expect(within(screen.getByRole("navigation", { name: "Footer" })).getByText("Free discovery")).toBeTruthy();
+    expect(within(screen.getByRole("navigation", { name: "Footer" })).getByRole("link", { name: "Free discovery" }).getAttribute("href")).toBe("/#discovery");
     await screen.findByRole("button", { name: "Acquisition" });
   });
 });

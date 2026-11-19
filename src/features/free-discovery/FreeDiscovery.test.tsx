@@ -55,7 +55,7 @@ function renderDiscovery() {
   return render(
     <StrictMode>
       <MemoryRouter>
-        <FreeDiscovery variant="card" />
+        <FreeDiscovery />
       </MemoryRouter>
     </StrictMode>,
   );

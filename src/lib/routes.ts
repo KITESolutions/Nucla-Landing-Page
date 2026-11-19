@@ -7,6 +7,8 @@ export const routes = {
   contact: "/contact",
 } as const;
 
+export const discoverySectionId = "discovery";
+export const homeDiscovery = `${routes.home}#${discoverySectionId}`;
 export const contactForm = `${routes.contact}#contact-form`;
 export const appSignIn = "https://app.nucla.com";
 export const salesEmail = "sales@nucla.com";
