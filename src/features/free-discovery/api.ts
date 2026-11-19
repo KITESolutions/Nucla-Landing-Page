@@ -51,7 +51,7 @@ async function request<T>(path: string, body?: unknown): Promise<T> {
 export const freeDiscoveryApi = {
   lenses: () => request<Lens[]>("/lenses"),
   /** The email comes with the search: nothing runs without it. */
-  start: (body: { query: string; lens: string; email: string; visitor_id: string; turnstile_token: string }) =>
+  start: (body: { submission_id: string; query: string; lens: string; email: string; visitor_id: string; turnstile_token: string }) =>
     request<SearchStarted>("/searches", body),
   status: (searchId: string, visitorId: string) =>
     request<SearchStatus>(`/searches/${encodeURIComponent(searchId)}?visitor_id=${encodeURIComponent(visitorId)}`),

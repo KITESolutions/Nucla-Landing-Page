@@ -7,6 +7,7 @@ import { FreeDiscoveryError, freeDiscoveryApi } from "./api";
 import { MESSAGES, STOPS, initialState, reducer } from "./state";
 import type { FunnelStep } from "./types";
 import { VerificationError, useTurnstile } from "./useTurnstile";
+import { clearSubmission, submissionFor } from "./submission";
 
 const VISITOR_KEY = "nucla_free_discovery_visitor";
 const SEARCH_KEY = "nucla_free_discovery_search";
@@ -162,7 +163,8 @@ export function useFreeDiscovery() {
     dispatch({ type: "busy", busy: true });
     try {
       const turnstile_token = await getToken();
-      const started = await freeDiscoveryApi.start({ query, lens: state.lens, email, visitor_id: visitor, turnstile_token });
+      const submission_id = submissionFor(query, state.lens, email);
+      const started = await freeDiscoveryApi.start({ query, lens: state.lens, email, submission_id, visitor_id: visitor, turnstile_token });
       session.set(EMAIL_KEY, email);
       startedAt.current = Date.now();
       // Spaced as the API stores the query, so the same search is never reported as another one.
@@ -193,7 +195,7 @@ export function useFreeDiscovery() {
     setLens: (lens: string) => dispatch({ type: "setLens", lens }),
     setEmail: (email: string) => dispatch({ type: "setEmail", email }),
     start,
-    restart: () => dispatch({ type: "restart" }),
+    restart: () => { clearSubmission(); dispatch({ type: "restart" }); },
     formSeen,
     bookDemo: () => report("demo_clicked"),
   };

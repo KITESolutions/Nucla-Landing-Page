@@ -19,7 +19,7 @@ describe("freeDiscoveryApi", () => {
 
   it("posts the search, email included, as JSON without cookies", async () => {
     const fetch = vi.spyOn(globalThis, "fetch").mockResolvedValue(json(202, { search_id: "s1" }));
-    const body = { query: "robots", lens: "acquisition_generic", email: "ana@acme.com", visitor_id: "v1", turnstile_token: "t" };
+    const body = { submission_id: "submission-1", query: "robots", lens: "acquisition_generic", email: "ana@acme.com", visitor_id: "v1", turnstile_token: "t" };
     expect(await freeDiscoveryApi.start(body)).toEqual({ search_id: "s1" });
     const [url, init] = fetch.mock.calls[0];
     expect(url).toBe("https://api.nucla.test/api/v1/tripwire/searches");

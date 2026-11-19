@@ -136,6 +136,7 @@ describe("FreeDiscovery", () => {
       query: "Robotics for food manufacturing",
       lens: "partnership_strategic",
       email: "ana@acme.com",
+      submission_id: expect.stringMatching(/^[0-9a-f-]{36}$/),
       visitor_id: expect.stringMatching(/^[0-9a-f-]{36}$/),
       turnstile_token: "turnstile-token",
     });
@@ -263,12 +264,15 @@ describe("FreeDiscovery", () => {
     api.start.mockRejectedValueOnce(new FreeDiscoveryError(offline, "network", null));
     await startSearch();
     await expectError(offline);
+    const submission = api.start.mock.calls.at(-1)?.[0].submission_id;
+    expect(submission).toBeTruthy();
 
     api.start.mockReturnValueOnce(new Promise((_, reject) => (fail = reject)));
     submit();
     await waitFor(() => expect(status().textContent).toBe("Starting…"));
     await act(async () => fail(new FreeDiscoveryError(offline, "network", null)));
     await expectError(offline);
+    expect(api.start.mock.calls.at(-1)?.[0].submission_id).toBe(submission);
   });
 
   it("stops polling once the matches show", async () => {

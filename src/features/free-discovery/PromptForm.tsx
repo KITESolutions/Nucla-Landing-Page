@@ -125,7 +125,7 @@ export function PromptForm({ variant, lenses, lens, email, prompt, busy, error, 
         </div>
       )}
       <p className={styles[`privacy_${variant}`]}>
-        We use your email to run your discovery and may follow up about it.{" "}
+        Your email is saved with your request. Your matches appear on this page.{" "}
         <a href={PRIVACY_URL} target="_blank" rel="noopener noreferrer">
           Privacy policy
         </a>
