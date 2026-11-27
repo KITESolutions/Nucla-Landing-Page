@@ -1,5 +1,5 @@
-import { ClosingCta } from "@/components/sections/ClosingCta";
 import { CustomerProof } from "@/components/sections/CustomerProof";
+import { DemoSection } from "@/features/contact/DemoSection";
 import { Clients } from "@/features/home/Clients";
 import { DiscoverSection } from "@/features/home/DiscoverSection";
 import { Engine } from "@/features/home/Engine";
@@ -24,7 +24,7 @@ export function HomePage() {
       <CustomerProof variant="feature" />
       <RoiTeaser />
       <Partnership />
-      <ClosingCta />
+      <DemoSection />
     </>
   );
 }

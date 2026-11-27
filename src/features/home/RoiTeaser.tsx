@@ -46,7 +46,7 @@ export function RoiTeaser() {
         </p>
         <div className={styles.footer}>
           <Link to={routes.roiCalculator} className={styles.link}>
-            Open the full ROI calculator →
+            Open the full ROI calculator
           </Link>
         </div>
       </div>

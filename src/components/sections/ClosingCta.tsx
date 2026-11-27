@@ -11,7 +11,7 @@ export function ClosingCta() {
     <CtaBand id="demo" title="See it on your own" accent="deal flow.">
       <div className={styles.actions}>
         <Link to={contactForm} className={styles.demo}>
-          Book a demo <span aria-hidden="true">↗</span>
+          Book a demo
         </Link>
         <a href={`mailto:${salesEmail}`} className={styles.email}>
           {salesEmail}

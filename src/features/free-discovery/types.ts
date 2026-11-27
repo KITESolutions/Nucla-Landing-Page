@@ -22,6 +22,12 @@ export interface Match {
   meta: string;
   score: string;
   reason: string;
+  company_details?: {
+    description?: string;
+    founded_year?: number;
+    sector?: string;
+    total_funding_usd?: number;
+  };
 }
 
 export interface SearchStatus {

@@ -9,7 +9,7 @@ const refused = (errorType: string) =>
 
 const field = (name: string) => screen.getByLabelText(name) as HTMLInputElement;
 const type = (name: string, value: string) => fireEvent.change(field(name), { target: { value } });
-const send = () => fireEvent.click(screen.getByRole("button", { name: "Send →" }));
+const send = () => fireEvent.click(screen.getByRole("button", { name: "Request a demo" }));
 
 function fillIn() {
   type("First name", " Ana ");
@@ -93,7 +93,7 @@ describe("the contact form", () => {
       "We couldn't send your message. Try again in a moment. You can also write to sales@nucla.com.",
     );
     expect(field("Work email").value).toBe("ana@acme.com");
-    expect((screen.getByRole("button", { name: "Send →" }) as HTMLButtonElement).disabled).toBe(false);
+    expect((screen.getByRole("button", { name: "Request a demo" }) as HTMLButtonElement).disabled).toBe(false);
   });
 
   it("sends once however often Send is pressed while it's sending", async () => {

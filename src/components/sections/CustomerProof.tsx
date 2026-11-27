@@ -10,7 +10,7 @@ export function CustomerProof({ variant = "card" }: Props) {
   const photo = (
     <div className={styles[`photoFrame_${variant}`]}>
       <img
-        src="/images/team-photo.jpg"
+        src={`${import.meta.env.BASE_URL}images/team-photo.jpg`}
         alt="Two colleagues reviewing work together on a laptop"
         className={styles[`photo_${variant}`]}
         loading="lazy"
@@ -29,7 +29,7 @@ export function CustomerProof({ variant = "card" }: Props) {
         cross-functionally before you guys came along.”
       </blockquote>
       <figcaption className={styles[`caption_${variant}`]}>
-        <img src="/images/mars-logo.png" alt="Mars" className={styles.logo} />
+        <img src={`${import.meta.env.BASE_URL}images/mars-logo.png`} alt="Mars" className={styles.logo} />
         <span className={styles.role}>Global Innovation &amp; R&amp;D Leader, Mars</span>
       </figcaption>
     </figure>

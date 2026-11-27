@@ -54,8 +54,10 @@ export function useFreeDiscovery() {
   // The email and the search are kept for this tab only, so a shared computer doesn't offer them to the next person
   // and a visitor back another day starts at the form instead of an expired search.
   const saved = useMemo(savedSearch, []);
+  const savedEmail = useMemo(() => session.get(EMAIL_KEY) ?? "", []);
+  const rememberedEmail = useRef(savedEmail);
   const [state, dispatch] = useReducer(reducer, undefined, () =>
-    initialState(session.get(EMAIL_KEY) ?? "", saved?.id ?? null),
+    initialState(savedEmail, saved?.id ?? null),
   );
   const visitor = useMemo(visitorId, []);
   const getToken = useTurnstile();
@@ -148,26 +150,30 @@ export function useFreeDiscovery() {
     };
   }, [polling, state.searchId, visitor]);
 
-  const requestEmail = () => {
+  const submitPrompt = () => {
+    if (state.step !== "idle" || state.busy) return;
     if (!freeDiscoveryEnabled) return dispatch({ type: "formError", message: MESSAGES.unavailable });
     if (!state.lens) {
       retryLenses();
       return dispatch({ type: "formError", message: MESSAGES.unavailable });
     }
     if (state.prompt.trim().length < 3) return dispatch({ type: "formError", message: MESSAGES.tooShort });
+    const email = rememberedEmail.current.trim();
+    if (EMAIL.test(email)) {
+      void startSearch(email);
+      return;
+    }
     dispatch({ type: "requestEmail" });
   };
 
-  const start = useCallback(async () => {
-    if (state.step !== "email" || state.busy) return;
-    const email = state.email.trim();
-    if (!EMAIL.test(email)) return dispatch({ type: "formError", message: MESSAGES.invalidEmail });
+  const startSearch = async (email: string) => {
     const query = state.prompt.trim();
     dispatch({ type: "busy", busy: true });
     try {
       const turnstile_token = await getToken();
       const submission_id = submissionFor(query, state.lens, email);
       const started = await freeDiscoveryApi.start({ query, lens: state.lens, email, submission_id, visitor_id: visitor, turnstile_token });
+      rememberedEmail.current = email;
       session.set(EMAIL_KEY, email);
       startedAt.current = Date.now();
       // Spaced as the API stores the query, so the same search is never reported as another one.
@@ -190,16 +196,23 @@ export function useFreeDiscovery() {
     } finally {
       dispatch({ type: "busy", busy: false });
     }
-  }, [getToken, state.busy, state.email, state.lens, state.prompt, state.step, visitor]);
+  };
+
+  const submitEmail = () => {
+    if (state.step !== "email" || state.busy) return;
+    const email = state.email.trim();
+    if (!EMAIL.test(email)) return dispatch({ type: "formError", message: MESSAGES.invalidEmail });
+    void startSearch(email);
+  };
 
   return {
     state,
     setPrompt: (prompt: string) => dispatch({ type: "setPrompt", prompt }),
     setLens: (lens: string) => dispatch({ type: "setLens", lens }),
     setEmail: (email: string) => dispatch({ type: "setEmail", email }),
-    requestEmail,
+    submitPrompt,
     editPrompt: () => dispatch({ type: "editPrompt" }),
-    start,
+    submitEmail,
     restart: () => { clearSubmission(); dispatch({ type: "restart" }); },
     formSeen,
     bookDemo: () => report("demo_clicked"),

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-import { discoverySectionId } from "@/lib/routes";
 import { freeDiscoveryEnabled } from "@/lib/config";
+import { contactForm, homeDiscovery } from "@/lib/routes";
 import { useReducedMotion } from "@/lib/useReducedMotion";
 
 import { Globe } from "./Globe";
@@ -39,13 +40,13 @@ export function HomeHero() {
         </p>
         <div className={styles.actions}>
           {freeDiscoveryEnabled && (
-            <a href={`#${discoverySectionId}`} className={styles.tryButton}>
-              Try a free discovery →
-            </a>
+            <Link to={homeDiscovery} className={styles.tryButton}>
+              Try a free discovery
+            </Link>
           )}
-          <a href="#demo" className={styles.demoButton}>
-            Book a demo <span aria-hidden="true">↗</span>
-          </a>
+          <Link to={contactForm} className={styles.demoButton}>
+            Book a demo
+          </Link>
         </div>
       </div>
       <div className={styles.stage}>

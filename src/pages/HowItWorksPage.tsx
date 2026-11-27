@@ -30,17 +30,17 @@ const QUESTIONS = [
 
 /** Each logo's height, matched by eye in the redesign so the marks look the same size. */
 const YOUR_SYSTEMS = [
-  { src: "/images/salesforce-logo.png", alt: "Salesforce", height: 22 },
-  { src: "/images/hubspot-logo.png", alt: "HubSpot", height: 24 },
-  { src: "/images/affinity-logo.png", alt: "Affinity", height: 24 },
-  { src: "/images/gmail-logo.png", alt: "Gmail", height: 24 },
+  { src: `${import.meta.env.BASE_URL}images/salesforce-logo.png`, alt: "Salesforce", height: 22 },
+  { src: `${import.meta.env.BASE_URL}images/hubspot-logo.png`, alt: "HubSpot", height: 24 },
+  { src: `${import.meta.env.BASE_URL}images/affinity-logo.png`, alt: "Affinity", height: 24 },
+  { src: `${import.meta.env.BASE_URL}images/gmail-logo.png`, alt: "Gmail", height: 24 },
 ];
 
 const MARKET_DATA = [
-  { src: "/images/linkedin-logo.png", alt: "LinkedIn", height: 17 },
-  { src: "/images/crustdata-logo.png", alt: "Crustdata", height: 17 },
-  { src: "/images/crunchbase-logo.png", alt: "Crunchbase", height: 14 },
-  { src: "/images/carbonarc-logo.png", alt: "Carbon Arc", height: 17 },
+  { src: `${import.meta.env.BASE_URL}images/linkedin-logo.png`, alt: "LinkedIn", height: 17 },
+  { src: `${import.meta.env.BASE_URL}images/crustdata-logo.png`, alt: "Crustdata", height: 17 },
+  { src: `${import.meta.env.BASE_URL}images/crunchbase-logo.png`, alt: "Crunchbase", height: 14 },
+  { src: `${import.meta.env.BASE_URL}images/carbonarc-logo.png`, alt: "Carbon Arc", height: 17 },
 ];
 
 const CLIENTS = ["Mars", "Wesco", "PMI"];

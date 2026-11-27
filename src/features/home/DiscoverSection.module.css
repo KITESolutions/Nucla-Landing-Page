@@ -7,17 +7,17 @@
 .head {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 24px;
+  gap: 8px 24px;
   align-items: baseline;
-  margin-bottom: 28px;
+  justify-content: space-between;
+  margin-bottom: clamp(16px, 3vw, 28px);
 }
 
 .note {
-  margin-inline-start: auto;
-  text-align: right;
   color: var(--ink-3);
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  text-wrap: balance;
 }

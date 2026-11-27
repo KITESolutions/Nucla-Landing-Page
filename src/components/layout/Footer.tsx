@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { freeDiscoveryEnabled } from "@/lib/config";
-import { linkedIn, homeDiscovery, routes, salesEmail, salesPhone } from "@/lib/routes";
+import { contactForm, homeDiscovery, linkedIn, routes, salesEmail, salesPhone } from "@/lib/routes";
 
 import styles from "./Footer.module.css";
 
@@ -10,7 +10,7 @@ const LINKS = [
   { to: routes.howItWorks, label: "How it works" },
   { to: routes.roiCalculator, label: "ROI calculator" },
   ...(freeDiscoveryEnabled ? [{ to: homeDiscovery, label: "Free discovery" }] : []),
-  { to: routes.contact, label: "Contact us" },
+  { to: contactForm, label: "Contact us" },
 ];
 
 export function Footer() {
@@ -18,7 +18,7 @@ export function Footer() {
     <footer>
       <div className={styles.columns}>
         <div>
-          <img src="/assets/nucla-logo.png" alt="Nucla" className={styles.logo} />
+          <img src={`${import.meta.env.BASE_URL}assets/nucla-logo.png`} alt="Nucla" className={styles.logo} />
           <p className={styles.tagline}>The intelligence layer for corporate venture and innovation teams.</p>
         </div>
         <nav className={styles.links} aria-label="Footer">
@@ -33,7 +33,7 @@ export function Footer() {
           <a href={`mailto:${salesEmail}`}>{salesEmail}</a>
           <a href={salesPhone.href}>{salesPhone.label}</a>
           <a href={linkedIn} target="_blank" rel="noopener noreferrer" className={styles.linkedIn}>
-            LinkedIn <span aria-hidden="true">↗</span>
+            LinkedIn
             <span className="visually-hidden"> (opens in a new tab)</span>
           </a>
         </div>

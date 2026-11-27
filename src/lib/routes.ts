@@ -8,8 +8,11 @@ export const routes = {
 } as const;
 
 export const discoverySectionId = "discovery";
+export const discoveryPromptId = "discovery-prompt";
 export const homeDiscovery = `${routes.home}#${discoverySectionId}`;
-export const contactForm = `${routes.contact}#contact-form`;
+export const contactFormId = "contact-form";
+export const contactForm = `${routes.home}#${contactFormId}`;
+export const legacyContactHtml = "/nucla-contact.html";
 export const appSignIn = "https://app.nucla.com";
 export const salesEmail = "sales@nucla.com";
 export const salesPhone = { label: "647-960-0959", href: "tel:+16479600959" };

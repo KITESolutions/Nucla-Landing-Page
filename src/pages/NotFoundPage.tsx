@@ -11,7 +11,7 @@ export function NotFoundPage() {
   return (
     <PageHero eyebrow="404" title="This page" accent="isn't here.">
       <Link to={routes.home} className={styles.home}>
-        Go to the home page →
+        Go to the home page
       </Link>
     </PageHero>
   );

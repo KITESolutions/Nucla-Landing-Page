@@ -1,0 +1,19 @@
+.card {
+  max-width: 640px;
+  margin: clamp(24px, 4vw, 40px) auto 0;
+  padding: clamp(16px, 3vw, 32px);
+  border-radius: clamp(20px, 2.4vw, 28px);
+  background: var(--surface);
+  text-align: left;
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--lilac);
+  outline-offset: 4px;
+}
+
+.lede {
+  margin: 0 0 18px;
+  color: var(--ink-2);
+  font-size: 16px;
+}

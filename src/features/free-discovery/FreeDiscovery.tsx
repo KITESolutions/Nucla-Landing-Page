@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useId, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { Spinner } from "@/components/ui/Spinner";
@@ -14,7 +14,7 @@ const SEEN_RATIO = 0.3;
 
 /** The short message a screen reader hears for each step. */
 function announcement(state: State) {
-  if (state.step === "email" && state.busy) return "Starting…";
+  if (state.busy) return "Starting…";
   if (state.step === "searching") return "Searching…";
   if (state.step === "results") return `${state.matches.length} ${state.matches.length === 1 ? "match" : "matches"} ready`;
   if (state.step === "stopped") return state.stop?.title ?? "";
@@ -22,11 +22,12 @@ function announcement(state: State) {
 }
 
 export function FreeDiscovery() {
-  const { state, setPrompt, setLens, setEmail, requestEmail, editPrompt, start, restart, formSeen, bookDemo } = useFreeDiscovery();
+  const { state, setPrompt, setLens, setEmail, submitPrompt, editPrompt, submitEmail, restart, formSeen, bookDemo } = useFreeDiscovery();
+  const progressTitleId = useId();
   const strategy = state.lenses.find((option) => option.key === state.lens)?.name ?? "your strategy";
 
   // Each step replaces the last, so once the visitor acts, focus moves to the new step instead of falling to the
-  // page: the searching title, the results heading, the stop, or the form field an error is about.
+  // page: the progress panel, the results heading, the stop, or the form field an error is about.
   const panel = useRef<HTMLDivElement>(null);
   const focusTarget = useRef<HTMLElement | null>(null);
   const setFocusTarget = useCallback((node: HTMLElement | null) => {
@@ -78,11 +79,12 @@ export function FreeDiscovery() {
           lenses={state.lenses}
           lens={state.lens}
           prompt={state.prompt}
+          busy={state.busy}
           error={state.formError}
           focusRef={setFocusTarget}
           onLens={setLens}
           onPrompt={setPrompt}
-          onSubmit={follow(requestEmail)}
+          onSubmit={follow(submitPrompt)}
         />
       )}
 
@@ -95,15 +97,15 @@ export function FreeDiscovery() {
           focusRef={setFocusTarget}
           onEmail={setEmail}
           onEdit={follow(editPrompt)}
-          onSubmit={follow(start)}
+          onSubmit={follow(submitEmail)}
         />
       )}
 
       {state.step === "searching" && (
-        <div className={styles.progress_card}>
+        <div ref={setFocusTarget} tabIndex={-1} role="group" aria-labelledby={progressTitleId} className={styles.progress_card}>
           <Spinner />
           <div className={styles.grow}>
-            <div ref={setFocusTarget} tabIndex={-1} className={styles.progressTitle}>
+            <div id={progressTitleId} className={styles.progressTitle}>
               Searching live market data
             </div>
             {state.prompt && <div className={styles.quote}>“{state.prompt}”</div>}
@@ -144,7 +146,7 @@ export function FreeDiscovery() {
           </div>
           <p className={styles.stopText}>{state.stop.text}</p>
           <Link to={contactForm} className={styles.demoButton} onClick={bookDemo}>
-            Book a demo →
+            Book a demo
           </Link>
         </div>
       )}

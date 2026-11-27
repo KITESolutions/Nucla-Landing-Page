@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter, useLocation } from "react-router-dom";
 
 import { App } from "./App";
@@ -41,11 +41,21 @@ describe("with the free discovery settings", () => {
     expect(await screen.findByRole("radio", { name: "Acquisition" })).toBeTruthy();
   });
 
+  it.each(["/#discovery", "/#discover"])("focuses the search input for %s", async (path) => {
+    renderAt(path);
+    await screen.findByRole("radio", { name: "Acquisition" });
+    expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Describe the companies you are looking for" }));
+  });
+
   it("is on the home page and in the footer", async () => {
     renderAt("/");
-    expect(screen.getByRole("link", { name: "Try a free discovery →" }).getAttribute("href")).toBe("#discovery");
+    const link = screen.getByRole("link", { name: "Try a free discovery" });
+    expect(link.getAttribute("href")).toBe("/#discovery");
+    expect(document.activeElement).not.toBe(screen.getByRole("textbox", { name: "Describe the companies you are looking for" }));
     expect(screen.getByRole("heading", { name: /try a discovery now/i })).toBeTruthy();
     expect(within(screen.getByRole("navigation", { name: "Footer" })).getByRole("link", { name: "Free discovery" }).getAttribute("href")).toBe("/#discovery");
     await screen.findByRole("radio", { name: "Acquisition" });
+    fireEvent.click(link);
+    expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "Describe the companies you are looking for" }));
   });
 });

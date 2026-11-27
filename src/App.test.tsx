@@ -21,7 +21,6 @@ describe("the site", () => {
     ["/", "Find your next best investment. Assess every opportunity faster."],
     ["/how-it-works", "Other AI tools know the market. Nucla knows your relationship context."],
     ["/roi-calculator", "What your team gets back in a year."],
-    ["/contact", "Let's talk about your deal flow."],
     ["/no-such-page", "This page isn't here."],
   ])("renders %s", (path, title) => {
     renderAt(path);
@@ -29,7 +28,6 @@ describe("the site", () => {
   });
 
   it.each([
-    ["/contact.html", "Let's talk about your deal flow."],
     ["/how-it-works.html", "Other AI tools know the market. Nucla knows your relationship context."],
     ["/index.html", "Find your next best investment. Assess every opportunity faster."],
   ])("answers the old site's and the redesign's link %s", (path, title) => {
@@ -37,20 +35,26 @@ describe("the site", () => {
     expect(heading()).toBe(title);
   });
 
-  it("opens the contact page for the old site's demo link", () => {
-    renderAt("/#book");
-    expect(heading()).toBe("Let's talk about your deal flow.");
-  });
+  it.each(["/contact", "/contact.html", "/nucla-contact.html", "/#book", "/#demo"])(
+    "opens the home page demo form for %s",
+    (path) => {
+      renderAt(path);
+      expect(heading()).toBe("Find your next best investment. Assess every opportunity faster.");
+      const form = screen.getByRole("region", { name: "Contact form" });
+      expect(document.activeElement).toBe(form);
+      expect(within(form).getByRole("button", { name: "Request a demo" })).toBeTruthy();
+    },
+  );
 
   it("names each page in the tab title", () => {
     renderAt("/how-it-works");
     expect(document.title).toBe("How it works · Nucla");
   });
 
-  it("sends every Book a demo to the contact form", () => {
-    renderAt("/how-it-works");
-    for (const link of screen.getAllByRole("link", { name: /book a demo/i })) {
-      expect(link.getAttribute("href")).toBe("/contact#contact-form");
+  it.each(["/", "/how-it-works", "/roi-calculator"])("sends demo and contact links on %s to the same form", (path) => {
+    renderAt(path);
+    for (const link of screen.getAllByRole("link", { name: /^(book a demo|contact us)$/i })) {
+      expect(link.getAttribute("href")).toBe("/#contact-form");
     }
   });
 });
@@ -58,7 +62,7 @@ describe("the site", () => {
 describe("without the free discovery settings", () => {
   it("leaves free discovery out of the home page and the footer", () => {
     renderAt("/");
-    expect(screen.queryByRole("link", { name: "Try a free discovery →" })).toBeNull();
+    expect(screen.queryByRole("link", { name: "Try a free discovery" })).toBeNull();
     expect(screen.queryByRole("heading", { name: /try a discovery now/i })).toBeNull();
     expect(within(screen.getByRole("navigation", { name: "Footer" })).queryByText("Free discovery")).toBeNull();
   });

@@ -64,8 +64,8 @@ function renderDiscovery() {
 
 const emailField = () => screen.getByRole("textbox", { name: "Your email" });
 const promptField = () => screen.getByRole("textbox", { name: "Describe the companies you are looking for" });
-const requestEmail = () => fireEvent.click(screen.getByRole("button", { name: "See my matches →" }));
-const submit = () => fireEvent.click(screen.getByRole("button", { name: "Find my matches →" }));
+const requestEmail = () => fireEvent.click(screen.getByRole("button", { name: "See my matches" }));
+const submit = () => fireEvent.click(screen.getByRole("button", { name: "Find my matches" }));
 /** The one status region a screen reader listens to. */
 const status = () => screen.getByRole("status");
 /** What the page shows, leaving out the status region that repeats it for screen readers. */
@@ -119,11 +119,21 @@ afterEach(() => {
 describe("FreeDiscovery", () => {
   it("explains how strategy affects ranking and keeps examples separate", async () => {
     renderDiscovery();
-    const acquisition = await screen.findByRole("radio", { name: "Acquisition", checked: true });
+    await screen.findByRole("radio", { name: "Acquisition", checked: true });
     const strategy = screen.getByRole("group", { name: "Scoring strategy" });
     expect(description(strategy)).toBe("Your strategy shapes how Nucla scores and ranks your matches.");
+    const acquisitionDescription = screen.getByText("Find companies to buy.");
+    const partnership = screen.getByRole("radio", { name: "Partnership" });
+    const partnershipDescription = screen.getByText("Find companies to work with.");
+    expect(acquisitionDescription.hidden).toBe(false);
+    expect(partnershipDescription.hidden).toBe(true);
+    expect(description(partnership)).toBe("Find companies to work with.");
+
+    fireEvent.click(partnership);
+    expect(acquisitionDescription.hidden).toBe(true);
+    expect(partnershipDescription.hidden).toBe(false);
     fireEvent.click(screen.getByRole("button", { name: "Robotics for food manufacturing" }));
-    expect(screen.getByRole("radio", { checked: true })).toBe(acquisition);
+    expect(screen.getByRole("radio", { checked: true })).toBe(partnership);
     requestEmail();
     expect(document.activeElement).toBe(emailField());
     expect(api.start).not.toHaveBeenCalled();
@@ -189,7 +199,7 @@ describe("FreeDiscovery", () => {
     expect(screen.getByText("9.1/10")).toBeTruthy();
     expect(screen.getByText("Picking robots for food plants.")).toBeTruthy();
     expect(screen.getByText("Kinfold")).toBeTruthy();
-    expect(screen.getByRole("link", { name: "Book a demo →" }).getAttribute("href")).toBe("/contact#contact-form");
+    expect(screen.getByRole("link", { name: "Book a demo" }).getAttribute("href")).toBe("/#contact-form");
     expect(screen.getByRole("button", { name: "Run another discovery" })).toBeTruthy();
   });
 
@@ -197,7 +207,7 @@ describe("FreeDiscovery", () => {
     api.status.mockResolvedValue(finished);
     await startSearch();
     await shown("Top 2 matches");
-    fireEvent.click(screen.getByRole("link", { name: "Book a demo →" }));
+    fireEvent.click(screen.getByRole("link", { name: "Book a demo" }));
 
     const funnel = localStorage.getItem("nucla_free_discovery_funnel");
     expect(funnel).toMatch(/^[0-9a-f-]{36}$/);
@@ -319,9 +329,10 @@ describe("FreeDiscovery", () => {
     expect(api.status).toHaveBeenCalledTimes(polls);
   });
 
-  it("starts another discovery from a clean form, keeping the email", async () => {
+  it("starts another discovery from a clean form without asking for the accepted email again", async () => {
     api.status.mockResolvedValue(finished);
     await startSearch();
+    const firstSubmission = api.start.mock.calls[0][0].submission_id;
     fireEvent.click(await screen.findByRole("button", { name: "Run another discovery" }));
 
     expect(screen.queryByRole("textbox", { name: "Your email" })).toBeNull();
@@ -330,7 +341,22 @@ describe("FreeDiscovery", () => {
     expect(sessionStorage.getItem(SEARCH_KEY)).toBeNull();
     fireEvent.change(promptField(), { target: { value: "Packaging suppliers" } });
     requestEmail();
+    await waitFor(() => expect(api.start).toHaveBeenCalledTimes(2));
+    expect(api.start.mock.calls[1][0]).toMatchObject({ query: "Packaging suppliers", email: "ana@acme.com" });
+    expect(api.start.mock.calls[1][0].submission_id).not.toBe(firstSubmission);
+    expect(screen.queryByRole("textbox", { name: "Your email" })).toBeNull();
+  });
+
+  it("still asks for an address if the visitor edited the first search before submitting the email", async () => {
+    renderDiscovery();
+    await screen.findByRole("radio", { name: "Acquisition" });
+    fireEvent.change(promptField(), { target: { value: "Robotics for food manufacturing" } });
+    requestEmail();
+    fireEvent.change(emailField(), { target: { value: "ana@acme.com" } });
+    fireEvent.click(screen.getByRole("button", { name: "Back" }));
+    requestEmail();
     expect((emailField() as HTMLInputElement).value).toBe("ana@acme.com");
+    expect(api.start).not.toHaveBeenCalled();
   });
 
   it("offers only a demo after the last free discovery", async () => {
@@ -346,8 +372,8 @@ describe("FreeDiscovery", () => {
     await startSearch();
 
     expect(await shown("You've used your free discoveries")).toBeTruthy();
-    expect(screen.getByRole("link", { name: "Book a demo →" }).getAttribute("href")).toBe("/contact#contact-form");
-    fireEvent.click(screen.getByRole("link", { name: "Book a demo →" }));
+    expect(screen.getByRole("link", { name: "Book a demo" }).getAttribute("href")).toBe("/#contact-form");
+    fireEvent.click(screen.getByRole("link", { name: "Book a demo" }));
     expect(api.step.mock.calls.map(([, step]) => step)).toEqual(["form_viewed", "demo_clicked"]);
   });
 
@@ -358,7 +384,7 @@ describe("FreeDiscovery", () => {
     expect(await shown("Free discovery is full for today")).toBeTruthy();
     expect(status().textContent).toBe("Free discovery is full for today");
     await waitFor(() => expect(document.activeElement?.textContent).toBe("Free discovery is full for today"));
-    expect(screen.getByRole("link", { name: "Book a demo →" }).getAttribute("href")).toBe("/contact#contact-form");
+    expect(screen.getByRole("link", { name: "Book a demo" }).getAttribute("href")).toBe("/#contact-form");
     expect(api.status).not.toHaveBeenCalled();
   });
 
@@ -369,7 +395,7 @@ describe("FreeDiscovery", () => {
     await expectError("We couldn't reach Nucla. Try again in a moment.");
     expect((emailField() as HTMLInputElement).value).toBe("ana@acme.com");
     expect(screen.getByText("“Robotics for food manufacturing”")).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "Edit search" }));
+    fireEvent.click(screen.getByRole("button", { name: "Back" }));
     expect((promptField() as HTMLInputElement).value).toBe("Robotics for food manufacturing");
     expect(api.status).not.toHaveBeenCalled();
   });
@@ -425,7 +451,7 @@ describe("FreeDiscovery", () => {
     sessionStorage.clear(); // a new tab, or the browser closed and opened again
     renderDiscovery();
 
-    expect(await screen.findByRole("button", { name: "See my matches →" })).toBeTruthy();
+    expect(await screen.findByRole("button", { name: "See my matches" })).toBeTruthy();
     expect(screen.queryByText("Searching live market data")).toBeNull();
     expect(api.status).not.toHaveBeenCalled();
   });
@@ -435,7 +461,7 @@ describe("FreeDiscovery", () => {
     api.status.mockRejectedValue(new FreeDiscoveryError("Not found", "not_found", 404));
     renderDiscovery();
 
-    expect(await screen.findByRole("button", { name: "See my matches →" })).toBeTruthy();
+    expect(await screen.findByRole("button", { name: "See my matches" })).toBeTruthy();
     expect(api.status).toHaveBeenCalledWith(SEARCH_ID, expect.any(String));
     expect(screen.queryByText("That search has expired. Run it again.", VISIBLE)).toBeNull();
     expect(status().textContent).toBe("");
@@ -515,7 +541,7 @@ describe("FreeDiscovery for screen readers and keyboards", () => {
       "Enter a valid email address. Using your work email helps us tailor the results to your company.",
     );
     await waitFor(() => expect(document.activeElement).toBe(email));
-    fireEvent.click(screen.getByRole("button", { name: "Edit search" }));
+    fireEvent.click(screen.getByRole("button", { name: "Back" }));
     expect(promptField().getAttribute("aria-invalid")).toBeNull();
     fireEvent.change(promptField(), { target: { value: "ai" } });
     requestEmail();
@@ -531,7 +557,7 @@ describe("FreeDiscovery for screen readers and keyboards", () => {
     const page = await startSearch();
     const region = status();
     await shown("Scoring companies against your strategy...");
-    await waitFor(() => expect(document.activeElement?.textContent).toBe("Searching live market data"));
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByRole("group", { name: "Searching live market data" })));
     expect(region.textContent).toBe("Searching…");
     page.unmount();
     sessionStorage.clear();

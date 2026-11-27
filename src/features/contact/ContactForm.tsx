@@ -1,5 +1,6 @@
 import { type FormEvent, useId, useRef, useState } from "react";
 
+import { config } from "@/lib/config";
 import { salesEmail } from "@/lib/routes";
 
 import styles from "./ContactForm.module.css";
@@ -48,7 +49,7 @@ export function ContactForm() {
     if (found?.field) return fields.current[found.field]?.focus();
     setStatus("sending");
     try {
-      await sendContactRequest(request);
+      if (!config.demoFormOnly) await sendContactRequest(request);
       setStatus("sent");
       requestAnimationFrame(() => thanks.current?.focus());
     } catch (error) {
@@ -71,7 +72,9 @@ export function ContactForm() {
         <div className={styles.thanksBody}>
           <div className={styles.thanksTitle}>Thanks, {request.firstName.trim()}.</div>
           <p className={styles.thanksText}>
-            We'll reply to <span className={styles.address}>{request.email.trim()}</span>.
+            {config.demoFormOnly ? "This form is for demo only. It won't send emails or create meetings." : (
+              <>We'll reply to <span className={styles.address}>{request.email.trim()}</span>.</>
+            )}
           </p>
         </div>
       </div>
@@ -103,6 +106,7 @@ export function ContactForm() {
   return (
     // The form checks the fields itself, so the browser's own messages don't replace ours.
     <form onSubmit={submit} noValidate className={styles.form}>
+      {config.demoFormOnly && <p>This form is for demo only. It won't send emails or create meetings.</p>}
       <div className={styles.grid}>
         {input("firstName", "First name", "Jane", { autoComplete: "given-name" })}
         {input("email", "Work email", "you@company.com", { type: "email", autoComplete: "email" })}
@@ -119,7 +123,7 @@ export function ContactForm() {
         </div>
       )}
       <button type="submit" disabled={status === "sending"} className={styles.send}>
-        {status === "sending" ? "Sending…" : "Send →"}
+        {status === "sending" ? "Sending…" : "Request a demo"}
       </button>
     </form>
   );

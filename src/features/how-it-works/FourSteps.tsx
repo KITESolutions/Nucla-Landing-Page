@@ -7,10 +7,10 @@ import styles from "./FourSteps.module.css";
 const WEIGHTS = ["Thesis fit · 30%", "Team · 25%", "Traction · 20%", "Deal · 10%", "Market · 10%", "Strategic alignment · 5%"];
 
 const SYSTEMS = [
-  { src: "/images/salesforce-logo.png", alt: "Salesforce" },
-  { src: "/images/hubspot-logo.png", alt: "HubSpot" },
-  { src: "/images/affinity-logo.png", alt: "Affinity" },
-  { src: "/images/gmail-logo.png", alt: "Gmail" },
+  { src: `${import.meta.env.BASE_URL}images/salesforce-logo.png`, alt: "Salesforce" },
+  { src: `${import.meta.env.BASE_URL}images/hubspot-logo.png`, alt: "HubSpot" },
+  { src: `${import.meta.env.BASE_URL}images/affinity-logo.png`, alt: "Affinity" },
+  { src: `${import.meta.env.BASE_URL}images/gmail-logo.png`, alt: "Gmail" },
 ];
 
 const QUEUE = [

@@ -89,6 +89,7 @@ export function useTurnstile() {
     if (widget.current === null) {
       widget.current = turnstile.render(holder.current, {
         sitekey: config.turnstileSiteKey,
+        action: "tripwire_search",
         execution: "execute",
         appearance: "interaction-only",
         callback: settle(true),
