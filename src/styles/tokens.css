@@ -1,0 +1,74 @@
+/* Design tokens from the redesign. Components use these, never raw values. */
+:root {
+  --ink: #13112b;
+  --ink-2: #4a4760;
+  --ink-3: #6b6880;
+  --ink-4: #9a97ac;
+  --primary: #5046e5;
+  --primary-hover: #3b32c4;
+  --primary-soft: #f4f2ff;
+  --lilac: #a9a2ff;
+  --lilac-2: #b9b4f5;
+  --success: #34d399;
+  --success-ink: #065f46;
+  --success-soft: #e7faf2;
+  --danger: #b42318;
+  --page: #eeedf2;
+  --surface: #ffffff;
+  --surface-2: #f8f7fd;
+  --line: #e4e1f2;
+  --line-2: #dedce8;
+  --line-3: #dfdde8;
+  --line-soft: #eceaf5;
+  --line-chip: #ddd9f0;
+  --neutral-soft: #f3f2f6;
+  --lilac-soft: #d8d3f4;
+  --on-dark: #ffffff;
+  --on-dark-2: #c9c6e0;
+  --on-dark-3: #b9b4d6;
+  --on-dark-4: #8582a3;
+  --on-dark-5: #9a97b8;
+  --on-primary-2: #e4e1ff;
+  --night-2: #2a2650;
+  --glass-strong: rgba(255, 255, 255, 0.88);
+  --panel-on-dark-2: rgba(255, 255, 255, 0.08);
+  --hairline-on-dark-2: rgba(255, 255, 255, 0.14);
+  --success-glow: rgba(52, 211, 153, 0.14);
+  --globe-sphere: #17153a;
+  --globe-rim: rgba(169, 162, 255, 0.3);
+  --globe-grid: rgba(169, 162, 255, 0.09);
+  --shadow-primary: 0 30px 60px -30px rgba(80, 70, 229, 0.6);
+  --hairline: rgba(19, 17, 43, 0.14);
+  --hairline-on-dark: rgba(255, 255, 255, 0.12);
+  --hairline-on-dark-soft: rgba(255, 255, 255, 0.1);
+  --panel-on-dark: rgba(255, 255, 255, 0.06);
+  --glass: rgba(255, 255, 255, 0.74);
+  --glass-edge: rgba(255, 255, 255, 0.6);
+  --primary-deep: #4338ca;
+  --lilac-card: #ecebfd;
+  --lilac-track: #d6d3f5;
+  --lilac-line: #c9c5f7;
+  --night-tab: #1c1a3d;
+  --night-ring: #2e2b55;
+  --on-night-2: #e6e5f5;
+  --neutral-panel: #f4f3f9;
+  --panel-on-dark-soft: rgba(255, 255, 255, 0.05);
+  --chip-on-dark: rgba(255, 255, 255, 0.07);
+  --ring-on-dark: rgba(255, 255, 255, 0.28);
+  --success-halo: rgba(52, 211, 153, 0.18);
+  --success-edge: rgba(52, 211, 153, 0.5);
+  --shadow-panel: 0 24px 48px rgba(19, 17, 43, 0.1);
+
+  --font-sans: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --radius-pill: 999px;
+  --radius-card: 16px;
+  --radius-band: clamp(20px, 2.4vw, 36px);
+  --shadow-float: 0 10px 40px -18px rgba(19, 17, 43, 0.35);
+  --shadow-card: 0 30px 80px -50px rgba(80, 70, 229, 0.45);
+  --shadow-pill: 0 20px 50px -20px rgba(19, 17, 43, 0.45);
+
+  --gutter: clamp(16px, 4vw, 56px);
+  --band-inset: clamp(0px, 1vw, 14px);
+}

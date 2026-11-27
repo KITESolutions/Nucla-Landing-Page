@@ -1,0 +1,142 @@
+.section {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 40px) clamp(88px, 11vw, 150px);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 20px 48px;
+  margin-bottom: clamp(32px, 4vw, 48px);
+}
+
+.title {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: clamp(32px, 3.6vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.accent {
+  color: var(--primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(24px, 2.4vw, 32px);
+  border-radius: 28px;
+  background: var(--surface);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--primary-soft);
+}
+
+.icon svg {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cardTitle {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 500;
+  font-size: clamp(24px, 2.2vw, 30px);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+}
+
+.cardText {
+  margin: 12px 0 0;
+  color: var(--ink-3);
+  font-size: 16px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.logos {
+  gap: 10px;
+}
+
+.spread {
+  gap: 12px 16px;
+}
+
+.logo {
+  display: block;
+  width: auto;
+}
+
+.more {
+  padding: 6px 12px;
+  border: 1px dashed var(--on-dark-2);
+  border-radius: var(--radius-pill);
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+/* The last stage sits on ink. */
+.dark {
+  background: var(--ink);
+}
+
+.dark .icon {
+  background: var(--success-glow);
+}
+
+.dark .icon svg {
+  stroke: var(--success);
+}
+
+.dark .cardText {
+  color: var(--lilac-2);
+}
+
+.dark .cardTitle {
+  color: var(--on-dark);
+}
+
+.dark .footer {
+  border-top-color: var(--hairline-on-dark-2);
+}
+
+.tag {
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--panel-on-dark-2);
+  color: var(--on-dark);
+  font-size: 13px;
+}

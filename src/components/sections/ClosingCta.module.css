@@ -1,0 +1,40 @@
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 44px;
+}
+
+.demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 56px;
+  padding: 0 30px;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-dark);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.demo:hover {
+  background: var(--primary-hover);
+  color: var(--on-dark);
+}
+
+.email {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--on-dark);
+  letter-spacing: 0.04em;
+}
+
+.email:hover {
+  color: var(--lilac);
+}

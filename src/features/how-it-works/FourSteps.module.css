@@ -1,0 +1,263 @@
+.band {
+  margin: 0 var(--band-inset) clamp(80px, 10vw, 140px);
+  border-radius: var(--radius-band);
+  background: var(--ink);
+}
+
+.inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(72px, 9vw, 120px) clamp(16px, 4vw, 56px);
+}
+
+.title {
+  margin: 0;
+  color: var(--on-dark);
+  font-weight: 500;
+  font-size: clamp(32px, 4.2vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.accent {
+  color: var(--lilac);
+  white-space: nowrap;
+}
+
+.body {
+  position: relative;
+  margin-top: clamp(44px, 5vw, 72px);
+}
+
+/* The track and its nodes only show when the steps sit in a row. */
+.track,
+.node {
+  display: none;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 3vw, 40px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 960px) {
+  .steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .track {
+    position: absolute;
+    top: 10px;
+    left: 11px;
+    right: 11px;
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--hairline-on-dark);
+  }
+
+  .step {
+    padding-top: 44px;
+  }
+
+  .node {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+  }
+}
+
+.trackFill {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--success);
+  transition: width 0.9s ease;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.node {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--ring-on-dark);
+  border-radius: 50%;
+  background: var(--ink);
+  transition: all 0.5s;
+}
+
+.node::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--ring-on-dark);
+  transition: background 0.5s;
+}
+
+.stepTitle {
+  margin: 0;
+  color: var(--on-dark-2);
+  font-weight: 500;
+  font-size: clamp(21px, 1.8vw, 26px);
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  transition: color 0.5s;
+}
+
+.stepText {
+  min-height: 3em;
+  margin: 8px 0 0;
+  color: var(--on-dark-4);
+  font-size: 15px;
+  line-height: 1.5;
+  transition: color 0.5s;
+}
+
+.detail {
+  flex: 1;
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid var(--hairline-on-dark-soft);
+  border-radius: 18px;
+  background: var(--panel-on-dark-soft);
+  transition: border-color 0.5s;
+}
+
+.step[data-reached] .node {
+  border-color: var(--success);
+}
+
+.step[data-reached] .node::after {
+  background: var(--success);
+}
+
+.step[data-current] .node {
+  box-shadow: 0 0 0 6px var(--success-halo);
+}
+
+.step[data-current] .stepTitle {
+  color: var(--on-dark);
+}
+
+.step[data-current] .stepText {
+  color: var(--on-dark-2);
+}
+
+.step[data-current] .detail {
+  border-color: var(--success-edge);
+}
+
+/* Step details */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.memoText + .chips {
+  margin-top: 10px;
+}
+
+.chip {
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--chip-on-dark);
+  color: var(--on-dark-2);
+  font-size: 12px;
+}
+
+.chipDone {
+  background: var(--success);
+  color: var(--ink);
+}
+
+.systems {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.system {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.systemLogo {
+  display: block;
+  width: auto;
+  /* A tile can be narrower than the logo around 1000px wide: shrink it without squeezing. */
+  object-fit: contain;
+}
+
+.queue {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.queueRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.queueName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--on-dark);
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.meter {
+  width: 64px;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--hairline-on-dark);
+}
+
+.meterFill {
+  display: block;
+  height: 100%;
+  background: var(--success);
+}
+
+.score {
+  width: 22px;
+  color: var(--on-dark);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-align: right;
+}
+
+.memoLabel {
+  color: var(--lilac);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.memoText {
+  margin-top: 6px;
+  color: var(--on-dark);
+  font-size: 15px;
+  line-height: 1.4;
+}

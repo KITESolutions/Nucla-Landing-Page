@@ -9,3 +9,4 @@ homepage-*.png
 vite.log
 vite.err.log
 temp
+dist
